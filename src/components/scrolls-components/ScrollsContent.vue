@@ -4,22 +4,22 @@
           <p class="scrolls-paragraph">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla a enim id elit luctus pellentesque. Sed malesuada ipsum et ipsum rhoncus, sed commodo dolor viverra. Vestibulum ac metus vel libero vehicula viverra a sit amet urna.  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla a enim id elit luctus pellentesque. Sed malesuada ipsum et ipsum rhoncus, sed commodo dolor viverra. Vestibulum ac metus vel libero vehicula viverra a sit amet urna. 
           </p>
-          <div class="scrolls-box">
-              <div class="box-part box-top">
-                  <div class="box-title">
-                      <img class="icon" src="../../assets/cog-icon.png" alt="Cog Icon">
-                      <h4 class="title">Your miniscrolls</h4>
-                  </div>
-              </div>
-              <ContentMiddle />
-              <div class="box-part box-bottom">
-                  <button class="btn box-btn">
-                      <i class="fas fa-tools"></i>
-                      Create Miniscroll
-                  </button>
-              </div>
-          </div>
       </div>
+      <div class="scrolls-box">
+            <div class="box-part box-top">
+                <div class="box-title">
+                    <img class="icon" src="../../assets/cog-icon.png" alt="Cog Icon">
+                    <h4 class="title">Your miniscrolls</h4>
+                </div>
+            </div>
+            <ContentMiddle />
+            <div class="box-part box-bottom">
+                <button class="btn box-btn">
+                    <i class="fas fa-tools"></i>
+                    Create Miniscroll
+                </button>
+            </div>
+        </div>
   </section>
 </template>
 
@@ -50,7 +50,8 @@ $yellow: #E7AC51;
     }
 
     .scrolls-box {
-        width: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
 
         .box-part {
             width: 100%;
