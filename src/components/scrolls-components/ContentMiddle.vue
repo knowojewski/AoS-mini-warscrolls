@@ -3,38 +3,6 @@
       <div class="warscroll">
         <div class="warscroll-front"></div>
       </div>
-      <div class="warscroll">
-        <div class="warscroll-front"></div>
-      </div>
-      <div class="warscroll">
-        <div class="warscroll-front"></div>
-      </div>
-      <div class="warscroll">
-        <div class="warscroll-front"></div>
-      </div>
-      <div class="warscroll">
-        <div class="warscroll-front"></div>
-      </div>
-      <div class="warscroll">
-        <div class="warscroll-front"></div>
-      </div>
-      <div class="warscroll">
-        <div class="warscroll-front"></div>
-      </div>
-      <div class="warscroll">
-        <div class="warscroll-front"></div>
-      </div>
-      <div class="warscroll">
-        <div class="warscroll-front"></div>
-        <div class="warscroll-back"></div>
-      </div>
-      <div class="warscroll">
-        <div class="warscroll-front"></div>
-      </div>
-      <div class="warscroll">
-        <div class="warscroll-front"></div>
-        <div class="warscroll-back"></div>
-      </div>
   </div>
 </template>
 

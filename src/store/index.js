@@ -1,11 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import UI from './modules/UI';
+import miniscrolls from './modules/miniscrolls';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
-  mutations: {},
-  actions: {},
-  modules: {}
+  modules: {
+    UI,
+    miniscrolls
+  }
 });

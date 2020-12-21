@@ -1,5 +1,6 @@
 <template>
   <div class="miniscrolls">
+    <AddingModal />
     <ScrollsHeader />
     <ScrollsContent />
   </div>
@@ -9,11 +10,13 @@
 import { Vue, Component } from 'vue-property-decorator';
 import ScrollsHeader from '../components/scrolls-components/ScrollsHeader';
 import ScrollsContent from '../components/scrolls-components/ScrollsContent';
+import AddingModal from '../components/scrolls-components/AddingModal';
 
 @Component({
   components: {
     ScrollsHeader,
-    ScrollsContent
+    ScrollsContent,
+    AddingModal
   }
 })
 export default class Miniscrolls extends Vue {

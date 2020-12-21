@@ -1,26 +1,25 @@
 <template>
-  <div class="adding-modal">
-      <div class="adding-box">
+    <div class="adding-box" :class="{'opened': getAddingBox}">
         <div class="adding-box__top">
             <h2 class="adding-box__heading">Create Warscroll</h2>
-            <button class="adding-box__top-btn">
+            <button @click="closeAddingBox" class="adding-box__top-btn">
                 <span class="first"></span>
                 <span class="second"></span>
             </button>
         </div>
-        <div class="adding-box__main">
-            <div class="adding-box__content">
+        <div class="adding-box__main" :class="{'opened': getAddingBoxMain}">
+            <div class="adding-box__content" :class="{'opened': getAddingBoxContent}">
                 <form class="unit-infos">
                     <div class="box text-box">
                         <label for="unit-info-text">Unit Allegiance:</label>
                         <input type="text" id="unit-info-text">
                     </div>
-    
+
                     <div class="box text-box">
                         <label for="unit-info-text">Unit Name:</label>
                         <input type="text" id="unit-info-text">
                     </div>
-    
+
                     <div class="box text-box">
                         <label for="unit-info-text">Unit Mount:</label>
                         <input type="text" id="unit-info-text">
@@ -41,12 +40,12 @@
                         <label for="unit-info-text">Unit Wounds:</label>
                         <input type="text" id="unit-info-text">
                     </div>
-    
+
                     <div class="box number-box">
                         <label for="unit-info-text">Unit Bravery:</label>
                         <input type="text" id="unit-info-text">
                     </div>
-    
+
                     <div class="box add-box">
                         <div class="upper-side">
                             <p>Add Unit Weapon</p>
@@ -57,7 +56,7 @@
                         </div>
                         <div class="lower-side"></div>
                     </div>
-    
+
                     <div class="box add-box">
                         <div class="upper-side">
                             <p>Add Unit Ability</p>
@@ -68,7 +67,7 @@
                         </div>
                         <div class="lower-side"></div>
                     </div>
-    
+
                     <div class="box add-box">
                         <div class="upper-side">
                             <p>Add Unit Keyword</p>
@@ -88,43 +87,41 @@
             </div>
         </div>
     </div>
-  </div>
 </template>
 
 <script>
 import { Vue, Component } from 'vue-property-decorator';
+import { Getter, Action } from 'vuex-class';
 
 @Component
 export default class AddingModal extends Vue {
+@Getter getAddingBox;
+@Getter getAddingBoxMain;
+@Getter getAddingBoxContent;
+@Action closeAddingBox;
 
 }
 </script>
 
-<style lang="scss">
-$dark-grey: #272B2A;
-$lighter-grey: #665F55;
-$yellow: #E7AC51;
+<style lang="sass">
+$yellow-collor: #E7AC51
+$yellow-lighter: #ffcf88
+$grey: #665F55
+$dark-grey: #272b2a
+$warning-red: #d64a4a
+$success-green: #62b35d
 
-.adding-modal {
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.adding-box
+.adding-box 
     position: fixed
     width: 700px
     background: #fff
     top: 167px
     left: 0
-    z-index: 1
+    z-index: 10
     // transform: translateX(300px)
     transform: translateX(-700px)
     box-shadow: 2px 0 10px 1px #3333333f
-    transition: transform .5s
+    transition: transform .5s  
 
     .adding-box__top
         width: 100%
@@ -356,6 +353,6 @@ $yellow: #E7AC51;
         height: 700px
     
 .adding-box.opened
-    transform: translateX(300px)
+    transform: translateX(0)
 
 </style>

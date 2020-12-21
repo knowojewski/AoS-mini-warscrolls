@@ -14,7 +14,7 @@
             </div>
             <ContentMiddle />
             <div class="box-part box-bottom">
-                <button class="btn box-btn">
+                <button @click="openAddingBox" class="btn box-btn">
                     <i class="fas fa-tools"></i>
                     Create Miniscroll
                 </button>
@@ -25,6 +25,7 @@
 
 <script>
 import { Vue, Component } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
 import ContentMiddle from './ContentMiddle';
 
 @Component({
@@ -33,6 +34,7 @@ import ContentMiddle from './ContentMiddle';
   }
 })
 export default class ScrollsContent extends Vue {
+@Action openAddingBox;
 
 }
 </script>
