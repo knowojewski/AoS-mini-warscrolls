@@ -1,44 +1,23 @@
 const state = {
-    miniscroll: {
-        id: null,
-        allegiance: null,
-        name: null,
-        mount: null,
-        move: null,
-        save: null,
-        wounds: null,
-        bravery: null,
-        weapons: [],
-        abilities: [],
-        keywords: []
-    },
-
-    weapon: {
-        name: null,
-        type: null,
-        range: null,
-        attack: null,
-        hit: null,
-        wound: null,
-        rend: null,
-        damage: null
-    },
-
-    ability: {
-        type: null,
-        name: null,
-        description: null
-    },
-
-    keyword: null
+    miniscrolls: [],
+    weapons: [],
+    abilities: [],
+    keywords: []
 };
 
 const getters = {
-
+    getMiniscrolls: state => state.miniscrolls,
+    getWeapons: state => state.weapons,
+    getAbilities: state => state.abilities,
+    getKeywords: state => state.keywords
 };
 
 const actions = {
-
+    deleteForm({ state }, {array, id}) {
+        console.log(state);
+        const index = array.findIndex(item => item.id === id);
+        array.splice(index, 1);
+    }
 };
 const mutations = {};
 

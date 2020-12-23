@@ -1,17 +1,30 @@
 <template>
   <div class="box-middle">
-      <div class="warscroll">
-        <div class="warscroll-front"></div>
+      <div v-for="miniscroll in getMiniscrolls" :key="miniscroll.id" class="warscroll">
+        <div class="warscroll-front">
+          {{ miniscroll.id }}
+          <p>{{ miniscroll.name }}</p>
+          <p v-for="weapon in miniscroll.weapons" :key="weapon.id">
+            {{ weapon.name }}
+          </p>
+          <p v-for="ability in miniscroll.abilities" :key="ability.id">
+            {{ ability.name }}
+          </p>
+          <p v-for="keyword in miniscroll.keywords" :key="keyword.id">
+            {{ keyword.keyword }}
+          </p>
+        </div>
       </div>
   </div>
 </template>
 
 <script>
 import { Vue, Component } from 'vue-property-decorator';
+import { Getter } from 'vuex-class';
 
 @Component
 export default class ContentMiddle extends Vue {
-
+  @Getter getMiniscrolls;
 }
 </script>
 

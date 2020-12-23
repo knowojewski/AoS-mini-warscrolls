@@ -12,77 +12,47 @@
                 <form class="unit-infos">
                     <div class="box text-box">
                         <label for="unit-info-text">Unit Allegiance:</label>
-                        <input type="text" id="unit-info-text">
+                        <input type="text" v-model="allegiance">
                     </div>
 
                     <div class="box text-box">
                         <label for="unit-info-text">Unit Name:</label>
-                        <input type="text" id="unit-info-text">
+                        <input type="text" v-model="name">
                     </div>
 
                     <div class="box text-box">
                         <label for="unit-info-text">Unit Mount:</label>
-                        <input type="text" id="unit-info-text">
+                        <input type="text" v-model="mount">
                     </div>
                     
                     <div class="box number-box">
                         <label for="unit-info-text">Unit Move:</label>
-                        <input type="text" id="unit-info-text">
+                        <input type="text" v-model="move">
                     </div>
                     
                     <div class="box number-box">
                         <label for="unit-info-text">Unit Save:</label>
-                        <input type="text" id="unit-info-text">
+                        <input type="text" v-model="save">
                         <p>+</p>
                     </div>
                     
                     <div class="box number-box">
                         <label for="unit-info-text">Unit Wounds:</label>
-                        <input type="text" id="unit-info-text">
+                        <input type="text" v-model="wounds">
                     </div>
 
                     <div class="box number-box">
                         <label for="unit-info-text">Unit Bravery:</label>
-                        <input type="text" id="unit-info-text">
+                        <input type="text" v-model="bravery">
                     </div>
 
-                    <div class="box add-box">
-                        <div class="upper-side">
-                            <p>Add Unit Weapon</p>
-                            <button class="add-btn" id="addWeapon">
-                                <span></span>
-                                <span></span>
-                            </button>
-                        </div>
-                        <div class="lower-side"></div>
-                    </div>
-
-                    <div class="box add-box">
-                        <div class="upper-side">
-                            <p>Add Unit Ability</p>
-                            <button class="add-btn" id="addAbility">
-                                <span></span>
-                                <span></span>
-                            </button>
-                        </div>
-                        <div class="lower-side"></div>
-                    </div>
-
-                    <div class="box add-box">
-                        <div class="upper-side">
-                            <p>Add Unit Keyword</p>
-                            <button class="add-btn" id="addKeyword">
-                                <span></span>
-                                <span></span>
-                            </button>
-                        </div>
-                        <div class="lower-side"></div>
-                    </div>
-
+                    <WeaponForm  />
+                    <AbilityForm />
+                    <KeywordForm />
                 </form>
                 <div class="btn-box">
-                    <button class="btn operation-box__btn" id="clearFields"><i class="fas fa-broom"></i>Clear</button>
-                    <button class="btn operation-box__btn" id="addWarscroll"><i class="fas fa-folder-plus"></i>Add</button>
+                    <button class="btn operation-box__btn"><i class="fas fa-broom"></i>Clear</button>
+                    <button @click="createMiniscroll" class="btn operation-box__btn"><i class="fas fa-folder-plus"></i>Add</button>
                 </div>
             </div>
         </div>
@@ -92,14 +62,92 @@
 <script>
 import { Vue, Component } from 'vue-property-decorator';
 import { Getter, Action } from 'vuex-class';
+import WeaponForm from '../adding-modal-components/WeaponForm';
+import AbilityForm from '../adding-modal-components/AbilityForm';
+import KeywordForm from '../adding-modal-components/KeywordForm';
 
-@Component
+@Component({
+    components: {
+        WeaponForm,
+        AbilityForm,
+        KeywordForm
+    }
+})
 export default class AddingModal extends Vue {
-@Getter getAddingBox;
-@Getter getAddingBoxMain;
-@Getter getAddingBoxContent;
-@Action closeAddingBox;
+    @Getter getAddingBox;
+    @Getter getAddingBoxMain;
+    @Getter getAddingBoxContent;
+    @Getter getMiniscrolls;
+    @Getter getWeapons;
+    @Getter getAbilities;
+    @Getter getKeywords;
+    @Action closeAddingBox;
 
+    allegiance = null;
+    name = null;
+    mount = null;
+    move = null;
+    save = null;
+    wounds = null;
+    bravery = null;
+
+    createMiniscroll() {
+        let idDate = new Date();
+        let idNumber = idDate.valueOf();
+
+        const miniscroll = {
+            id: idNumber,
+            allegiance: this.allegiance,
+            name: this.name,
+            mount: this.mount,
+            move: this.move,
+            save: this.save,
+            wounds: this.wounds,
+            bravery: this.bravery,
+            weapons: [],
+            abilities: [],
+            keywords: []
+        }
+
+        this.getWeapons.forEach( item  => {
+            const weapon = {
+                id: item.id,
+                name: item.name,
+                type: item.type,
+                range: item.range,
+                attack: item.attack,
+                hit: item.hit,
+                wound: item.wound,
+                rend: item.rend,
+                damage: item.damage    
+            }
+
+            miniscroll.weapons.push(weapon);
+        })
+
+        this.getAbilities.forEach( item  => {
+            const ability = {
+                id: item.id,
+                type: item.type,
+                name: item.name,
+                description: item.description  
+            }
+
+            miniscroll.abilities.push(ability);
+        })
+
+        this.getKeywords.forEach( item  => {
+            const keyword = {
+                id: item.id,
+                keyword: item.keyword
+            }
+
+            miniscroll.keywords.push(keyword);
+        })
+        
+        this.getMiniscrolls.push(miniscroll);
+        console.log(this.getMiniscrolls);
+    }
 }
 </script>
 
