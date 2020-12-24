@@ -2,17 +2,72 @@
   <div class="box-middle">
       <div v-for="miniscroll in getMiniscrolls" :key="miniscroll.id" class="warscroll">
         <div class="warscroll-front">
-          {{ miniscroll.id }}
-          <p>{{ miniscroll.name }}</p>
-          <p v-for="weapon in miniscroll.weapons" :key="weapon.id">
-            {{ weapon.name }}
-          </p>
-          <p v-for="ability in miniscroll.abilities" :key="ability.id">
-            {{ ability.name }}
-          </p>
-          <p v-for="keyword in miniscroll.keywords" :key="keyword.id">
-            {{ keyword.keyword }}
-          </p>
+          <div class="warscroll-top">
+            <div class="warscroll-top-name">
+              <p>{{ miniscroll.name }}</p>
+              <p>ON {{ miniscroll.mount }}</p>
+            </div>
+            <div class="warscroll-top-weapons">
+              <p></p>
+            </div>
+          </div>
+          <div class="warscroll-stats">
+            <div class="stats-box">
+              <i class="fas fa-external-link-alt"></i>
+              <span>{{ miniscroll.move }}</span>
+            </div>
+            <div class="stats-box">
+              <i class="fas fa-shield-alt"></i>
+              <span>{{ miniscroll.save }}</span>
+            </div>
+            <div class="stats-box">
+              <i class="fas fa-skull"></i>
+              <span>{{ miniscroll.wounds }}</span>
+            </div>
+            <div class="stats-box">
+              <i class="fas fa-star"></i>
+              <span>{{ miniscroll.bravery }}</span>
+            </div>
+          </div>
+          <div class="warscroll-weapons-abilities">
+            <div class="warscroll-weapons">
+              <div class="weapons-stats">
+                <p></p>
+                <p>Range</p>
+                <p>Attack</p>
+                <p>To Hit</p>
+                <p>To Wound</p>
+                <p>Rend</p>
+                <p>Dmg</p>
+              </div>
+              <div class="weapon" v-for="weapon in miniscroll.weapons" :key="weapon.id">
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
+              </div>
+            </div>
+            <div class="warscroll-abilities">
+              <div class="ability" v-for="ability in miniscroll.abilities" :key="ability.id">
+                <p class="ability-type">
+                  {{ ability.type.split('').splice(0, 1).join('') }}
+                </p>
+                <p class="ability-name">
+                  {{ ability.name }}
+                </p>
+                <p class="ability-desc">
+                  {{ ability.description }}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="warscroll-keywords">
+
+          </div>
+          <p class="warscroll-id">{{ miniscroll.id }}</p>
         </div>
       </div>
   </div>
@@ -70,6 +125,129 @@ $yellow: #E7AC51;
   display: flex;
   flex-direction: column;
   cursor: pointer;
+
+  .warscroll-top {
+    border-bottom: 1px solid #000000;
+    width: 100%;
+    display: flex ;
+    justify-content: space-between;
+
+    .warscroll-top-name, .warscroll-top-weapons {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      width: 48%;
+    }
+    
+    .warscroll-top-name {
+      p:first-child {
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 12px;
+      }
+
+      p:last-child {
+        text-transform: uppercase;
+        font-size: 10px;
+      }
+    }
+
+    .warscroll-top-weapons {
+      text-align: right;
+      font-size: 9px;
+    }
+  }
+
+  .warscroll-stats {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    border-bottom: 1px solid #000000;
+    padding: 3px 0;
+
+    .stats-box {
+      display: flex;
+      align-items: center;
+        
+      i {
+        font-size: 23px;
+        margin-right: 4px;
+      }
+
+      span { font-size: 20px; }
+    }
+
+  }
+  
+  .warscroll-weapons-abilities {
+    width: 100%;
+    border-bottom: 1px solid #000000;
+    flex: 1;
+
+    .warscroll-weapons {
+      width: 95%;
+      display: flex;
+      flex-direction: column;
+      margin: 5px auto;
+
+      .weapons-stats, .weapon {
+        width: 100%;
+        display: flex;
+
+        p {
+          font-size: 11px;
+          border: 1px solid #000;
+          border-right: none;
+          width: 14%;
+          height: 16px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        p:nth-child(1) {
+          width: 8%;
+          padding-right: 1px;
+          border: none;
+        }
+
+        p:nth-child(2) { width: 17%; }
+            
+        p:nth-child(5) { width: 22%; }
+
+        p:nth-child(7) {
+          border-right: 1px solid #000000;
+          width: 11%;
+        }
+      }
+
+      .weapon {
+        margin-top: 2px;
+
+        p {
+          height: 18px;
+          font-size: 14px;
+          font-weight: bold;
+
+          i { margin-right: 5px; } 
+        }
+
+        p:nth-child(1) {
+          font-size: 12px;
+          font-weight: normal;
+          justify-content: flex-end;
+        }
+      }
+
+      .weapon:nth-child(even) {
+        background: #e0e0e0;
+
+        p:first-child { background: #fff; }   
+      }
+    }
+  }
+
+  .warscroll-keywords { font-size: 10px; }
 }
 
 
