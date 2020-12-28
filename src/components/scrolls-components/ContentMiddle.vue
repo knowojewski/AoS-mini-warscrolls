@@ -5,20 +5,20 @@
           <div class="warscroll-top">
             <div class="warscroll-top-name">
               <p>{{ miniscroll.name }}</p>
-              <p>ON {{ miniscroll.mount }}</p>
+              <p v-show="miniscroll.mount">ON {{ miniscroll.mount }}</p>
             </div>
             <div class="warscroll-top-weapons">
-              <p></p>
+              <p> {{ weaponsTopString(miniscroll.weapons) }}</p>
             </div>
           </div>
           <div class="warscroll-stats">
             <div class="stats-box">
               <i class="fas fa-external-link-alt"></i>
-              <span>{{ miniscroll.move }}</span>
+              <span>{{ miniscroll.move }}"</span>
             </div>
             <div class="stats-box">
               <i class="fas fa-shield-alt"></i>
-              <span>{{ miniscroll.save }}</span>
+              <span>{{ miniscroll.save }}+</span>
             </div>
             <div class="stats-box">
               <i class="fas fa-skull"></i>
@@ -40,23 +40,27 @@
                 <p>Rend</p>
                 <p>Dmg</p>
               </div>
-              <div class="weapon" v-for="weapon in miniscroll.weapons" :key="weapon.id">
-                <p></p>
-                <p></p>
-                <p></p>
-                <p></p>
-                <p></p>
-                <p></p>
-                <p></p>
+              <div class="weapon" v-for="weapon in miniscroll.weapons" :key="weapon.id" :class="{'ranged': weapon.type === 'Ranged'}">
+                <p> {{ createShortcut(weapon.name) }}</p>
+                <p>
+                  <i v-if="weapon.type === 'Melee'" class="fas fa-gavel"></i>
+                  <i v-if="weapon.type === 'Ranged'" class="fas fa-expand-arrows-alt"></i>
+                   {{ weapon.range }}"
+                </p>
+                <p>{{ weapon.attack }}</p>
+                <p>{{ weapon.hit }}+</p>
+                <p>{{ weapon.wound }}+</p>
+                <p>-{{ weapon.rend }}</p>
+                <p>{{ weapon.damage }}</p>
               </div>
             </div>
             <div class="warscroll-abilities">
               <div class="ability" v-for="ability in miniscroll.abilities" :key="ability.id">
                 <p class="ability-type">
-                  {{ ability.type.split('').splice(0, 1).join('') }}
+                  {{ createShortcut(ability.type) }}
                 </p>
                 <p class="ability-name">
-                  {{ ability.name }}
+                  {{ ability.name }}:
                 </p>
                 <p class="ability-desc">
                   {{ ability.description }}
@@ -65,7 +69,7 @@
             </div>
           </div>
           <div class="warscroll-keywords">
-
+            <p>{{ keywordsString(miniscroll.keywords) }}</p>
           </div>
           <p class="warscroll-id">{{ miniscroll.id }}</p>
         </div>
@@ -80,6 +84,42 @@ import { Getter } from 'vuex-class';
 @Component
 export default class ContentMiddle extends Vue {
   @Getter getMiniscrolls;
+
+  weaponsTopString(weapons) {
+    let weaponsArray = [];
+    let weaponsString = '';
+
+    weapons.forEach(weapon => {
+      weaponsArray.push(weapon.name);
+    });
+
+    weaponsString = weaponsArray.join(' / ');
+
+    return weaponsString;
+  }
+
+  keywordsString(keywords) {
+    let keywordsArray = [];
+    let keywordString = '';
+
+    keywords.forEach(keyword => {
+      keywordsArray.push(keyword.keyword);
+    });
+
+    keywordString = keywordsArray.join(', ')
+
+    return keywordString;
+  }
+
+  createShortcut(value) {
+    let shortcut = value.split(' ');
+
+    shortcut = shortcut.map(element => {
+      return element.split('').splice(0, 1).join('');
+    }).join('');
+
+    return shortcut;
+  }
 }
 </script>
 
@@ -222,12 +262,14 @@ $yellow: #E7AC51;
       }
 
       .weapon {
-        margin-top: 2px;
+        // margin-top: 2px;
+        order: 2;
 
         p {
           height: 18px;
           font-size: 14px;
           font-weight: bold;
+          border-top: none;
 
           i { margin-right: 5px; } 
         }
@@ -239,16 +281,46 @@ $yellow: #E7AC51;
         }
       }
 
-      .weapon:nth-child(even) {
-        background: #e0e0e0;
+      .weapon.ranged {
+        order: 1;
+      }
+    }
 
-        p:first-child { background: #fff; }   
+    .warscroll-abilities {
+      width: 100%;
+
+      .ability {
+        width: 100%;
+        font-size: 11px;
+
+        .ability-type {
+          float: left;
+          font-style: normal;
+          font-weight: bold;
+          margin-right: 3px;
+        }
+
+        .ability-name {
+          float: left;
+          font-style: italic;
+          margin-right: 3px;
+        }
+
+        .ability-desc {
+          font-weight: bold;
+        }
       }
     }
   }
 
   .warscroll-keywords { font-size: 10px; }
 }
+
+.warscroll:hover {
+  transform: translateY(-3px);
+  border: 1px solid $yellow;
+  box-shadow: 0 0 10px 1px $yellow;
+} 
 
 
 </style>

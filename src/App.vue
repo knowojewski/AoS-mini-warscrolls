@@ -29,6 +29,9 @@ $yellow: #E7AC51;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body {
   font-family: 'Montserrat', sans-serif;
 }
 
