@@ -8,7 +8,6 @@
         <path d="M145 263L171 250H205L232 263H145Z" fill="#C4C4C4"/>
         <rect x="118" y="161" width="139" height="54" fill="#C4C4C4"/>
         <rect x="171" y="215" width="34" height="35" fill="#C4C4C4"/>
-        <image class="hammer" href="../../assets/Hammer.svg"></image>
         <line class="sparcle sparcle-left sparcle-left-mid" x1="151.588" y1="141.191" x2="162.588" y2="149.191" stroke="#FFD84F" stroke-width="2"/>
         <line class="sparcle sparcle-left sparcle-left-top" x1="163.648" y1="141.238" x2="169.582" y2="146.286" stroke="#FF6712" stroke-width="2"/>
         <line class="sparcle sparcle-right sparcle-right-mid" x1="224.966" y1="142.84" x2="213.543" y2="150.223" stroke="#FF6712" stroke-width="2"/>

@@ -1,14 +1,14 @@
 <template>
-    <div class="adding-box" :class="{'opened': getAddingBox}">
+    <div class="adding-box">
+        <img class="bottom-line" src="../../assets/miniscrolls/bottom-line.png" alt="bottom line">
+        <img class="side-line left-line" src="../../assets/miniscrolls/side-line.png" alt="Left line">
+        <img class="side-line right-line" src="../../assets/miniscrolls/side-line.png" alt="Right line">
         <div class="adding-box__top">
             <h2 class="adding-box__heading">Create Warscroll</h2>
-            <button @click="closeAddingBox" class="adding-box__top-btn">
-                <span class="first"></span>
-                <span class="second"></span>
-            </button>
+            <img class="top-bg" src="../../assets/miniscrolls/top-bg.png" alt="Top background">
         </div>
-        <div class="adding-box__main" :class="{'opened': getAddingBoxMain}">
-            <div class="adding-box__content" :class="{'opened': getAddingBoxContent}">
+        <div class="adding-box__main">
+            <div class="adding-box__content">
                 <form class="unit-infos">
                     <div class="box text-box">
                         <label for="unit-info-text">Unit Allegiance:</label>
@@ -50,12 +50,19 @@
                     <AbilityForm />
                     <KeywordForm />
                 </form>
-                <div class="btn-box">
-                    <button class="btn operation-box__btn"><i class="fas fa-broom"></i>Clear</button>
-                    <button @click="createMiniscroll" class="btn operation-box__btn"><i class="fas fa-folder-plus"></i>Add</button>
-                </div>
             </div>
         </div>
+        <div class="btns">
+            <div class="btn-box">
+                <img src="../../assets/button-border.png" alt="Button border">
+                <button class="btn operation-box__btn">Clear fields</button>
+            </div>
+            <div class="btn-box">
+                <img src="../../assets/button-border.png" alt="Button border">
+                <button @click="createMiniscroll" class="btn operation-box__btn">Create warscroll</button>
+            </div>
+        </div>
+        
     </div>
 </template>
 
@@ -73,10 +80,7 @@ import KeywordForm from '../adding-modal-components/KeywordForm';
         KeywordForm
     }
 })
-export default class AddingModal extends Vue {
-    @Getter getAddingBox;
-    @Getter getAddingBoxMain;
-    @Getter getAddingBoxContent;
+export default class AddingBox extends Vue {
     @Getter getMiniscrolls;
     @Getter getWeapons;
     @Getter getAbilities;
@@ -146,96 +150,71 @@ export default class AddingModal extends Vue {
         })
         
         this.getMiniscrolls.push(miniscroll);
-        console.log(this.getMiniscrolls);
     }
 }
 </script>
 
 <style lang="sass">
-$yellow-collor: #E7AC51
-$yellow-lighter: #ffcf88
-$grey: #665F55
-$dark-grey: #272b2a
-$warning-red: #d64a4a
-$success-green: #62b35d
-
 .adding-box 
-    position: fixed
+    position: relative
     width: 700px
+    max-width: 700px
+    margin-bottom: 100px
     background: #fff
-    top: 167px
-    left: 0
-    z-index: 10
-    // transform: translateX(300px)
-    transform: translateX(-700px)
-    box-shadow: 2px 0 10px 1px #3333333f
-    transition: transform .5s  
+    transition: transform .5s
+    z-index: 11  
+
+    .bottom-line
+        width: 100% 
+        position: absolute
+        bottom: 0
+        left: 0
+
+    .side-line 
+        height: 100%
+        position: absolute
+        top: 0
+
+    .left-line
+        left: -5px
+
+    .right-line
+        right: -5px
 
     .adding-box__top
         width: 100%
         height: 50px
-        background: $dark-grey
         display: flex
-        justify-content: center
         align-items: center
         position: relative
+        
+        .top-bg 
+            position: absolute
+            width: 102%
+            height: 100%
+            top: -5px
+            left: -1%
+            z-index: 0
 
         .adding-box__heading
             position: relative
             color: #F5F5F5
-            font-weight: 400
+            font-size: 18px
+            font-weight: 500
+            padding: 0 0 14px 30px
+            text-transform: uppercase
+            z-index: 1
 
-        .adding-box__heading::before, .adding-box__heading::after
-            position: absolute
-            content: ''
-            height: 2px
-            background: #f5f5f5
-            width: 150px
-            top: 50%
+    .adding-box__main::-webkit-scrollbar
+        background: #ffffff
+        width: 5px
 
-        .adding-box__heading::before
-            left: -170px
-
-        .adding-box__heading::after
-            right: -170px
-
-        .adding-box__top-btn
-            position: absolute
-            background: transparent
-            width: 28px
-            height: 28px
-            right: 15px
-            border-radius: 50%
-            border: none
-            display: flex
-            align-items: center
-            justify-content: center
-            cursor: pointer
-            transition: background .3s
-            
-            span
-                position: absolute
-                display: block
-                background: $yellow-collor
-                width: 80%
-                height: 3px
-                transition: background .3s
-
-            .first
-                transform: rotateZ(45deg)
-
-            .second
-                transform: rotateZ(- 45deg)
-
-        .adding-box__top-btn:hover
-            background: #f5f5f5
-
-            span
-                background: $dark-grey
+    .adding-box__main::-webkit-scrollbar-thumb
+        background: #000
 
     .adding-box__main
         width: 100%
-        height: 0
+        height: 600px
         background: #fff
         overflow-y: scroll
         transition: height .8s
@@ -245,7 +224,6 @@ $success-green: #62b35d
             flex-direction: column
             width: 100%
             height: 100%
-            opacity: 0
             padding: 30px
             transition: opacity .2s
 
@@ -269,10 +247,10 @@ $success-green: #62b35d
                         font-size: 15px
                         height: 30px
                         padding: 4px
-                        border-bottom: 1px solid $dark-grey
+                        border-bottom: 1px solid #272b2a
 
                     input:focus
-                        border-bottom: 2px solid $yellow-collor
+                        border-bottom: 2px solid #ff5372
                         outline: none
 
                 .text-box
@@ -298,7 +276,7 @@ $success-green: #62b35d
                         .add-btn
                             width: 35px
                             height: 35px
-                            background: $yellow-collor
+                            background: #000
                             border: none
                             border-radius: 3px
                             display: flex
@@ -322,7 +300,7 @@ $success-green: #62b35d
                                 height: 25px
 
                         .add-btn:hover
-                            background: $yellow-lighter
+                            background: #ff5372
 
                     .lower-side
                         width: 100%
@@ -337,10 +315,14 @@ $success-green: #62b35d
                                 border: none
                                 width: 30px
                                 height: 30px
-                                background: $warning-red
+                                background: #000
                                 font-size: 20px
                                 color: #ffffff
                                 cursor: pointer
+                                transition: background .3s
+
+                            .attributes-btn:hover
+                                background: #ff5372
 
                             input, select 
                                 width: 10%
@@ -385,22 +367,11 @@ $success-green: #62b35d
                             input:nth-child(3)
                                 width: 60%
 
-            .btn-box
-                margin-top: 20px
-                width: 100%
-                display: flex
-                justify-content: space-around
-
-                .operation-btn
-                    width: 45%
-
-        .adding-box__content.opened
-            opacity: 1
-
-    .adding-box__main.opened
-        height: 700px
-    
-.adding-box.opened
-    transform: translateX(0)
-
+.btns
+    position: absolute
+    bottom: -40px
+    left: 0
+    width: 100%
+    display: flex
+    justify-content: center
 </style>

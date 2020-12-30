@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-    <HeaderComponent />
+    <NavigationComponent />
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 import { Vue, Component} from 'vue-property-decorator';
-import HeaderComponent from './components/HeaderComponent';
+import NavigationComponent from './components/NavigationComponent';
 
 @Component({
   components: {
-    HeaderComponent
+    NavigationComponent
   }
 })
 export default class App extends Vue {
@@ -20,7 +20,7 @@ export default class App extends Vue {
 </script>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600&family=Roboto:wght@100;300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap');
 $dark-grey: #272B2A;
 $lighter-grey: #665F55;
 $yellow: #E7AC51;
@@ -32,37 +32,56 @@ $yellow: #E7AC51;
 }
 
 body {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Lora', serif;
+  background-color: #e1e1e1;
 }
 
-.row {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 20px;
+#app{
+  margin-left: 270px;
+  margin-bottom: 300px;
 }
 
-.btn {
-  color: #ffffff;
-  background: #E7AC51;
-  font-size: 18px;
-  height: 50px;
-  width: 300px;
-  border-radius: 3px;
+.btn-box {
+  width: 250px;
+  height: 37px;
+  max-width: 250px;
+  padding: 4px;
   border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background .3s;
+  position: relative;
 
-  i {
-    font-size: 22px;
-    margin-right: 10px;
+  img {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 0;
+  }
+
+  .btn {
+    position: relative;
+    font-family: 'Lora', serif;
+    font-size: 18px;
+    text-transform: uppercase;
+    font-weight: 600;
+    border: none;
+    background: #fff;
+    width: 100%;
+    height: 100%;
+    border-radius: 1px;
+    cursor: pointer;
+    transition: background .3s;
+    z-index: 1;
+  }
+
+  .btn:hover {
+    background: rgb(204, 204, 204);
   }
 }
 
-.btn:hover {
-  background: #ffcf88;
+.row {
+  max-width: 1900px;
+  margin: 0 auto;
+  padding: 0 30px;
 }
 
 @keyframes dark-triangle-anim {

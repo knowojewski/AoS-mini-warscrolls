@@ -129,12 +129,44 @@ $lighter-grey: #665F55;
 $yellow: #E7AC51;
 
 .box-middle {
-  border-left: 2px solid $dark-grey;
-  border-right: 2px solid $dark-grey;
+  max-height: 750px;
+  background: #fff;
+  margin: 0 8px 0 8px;
   padding: 10px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  overflow-y: scroll;
+}
+
+.box-middle::-webkit-scrollbar {
+  background: #ffffff;
+  width: 40px;
+}
+
+.box-middle::-webkit-scrollbar-button:single-button {
+  display: block;
+  width: 40px;
+  height: 60px;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+}
+
+.box-middle::-webkit-scrollbar-button:single-button:vertical:decrement {
+  background-image: url('../../../assets/arrow-up.png');
+}
+
+.box-middle::-webkit-scrollbar-button:single-button:vertical:decrement:hover {
+  background-position: 50% 10%;
+}
+
+.box-middle::-webkit-scrollbar-button:single-button:vertical:increment {
+  background-image: url('../../../assets/arrow-down.png');
+  height: 80px;
+}
+
+.box-middle::-webkit-scrollbar-button:single-button:vertical:increment:hover {
+  background-position: 50% 80%;
 }
 
 .warscroll {
