@@ -19,7 +19,11 @@ const actions = {
         array.splice(index, 1);
     }
 };
-const mutations = {};
+const mutations = {
+    clearWeaponsArray: state => state.weapons = [],
+    clearAbilitiesArray: state => state.abilities = [],
+    clearKeywordsArray: state => state.keywords = [],
+};
 
 export default {
     state,

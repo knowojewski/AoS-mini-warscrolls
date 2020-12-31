@@ -10,7 +10,7 @@
     <div class="lower-side">
         <div v-for="weapon in getWeapons" :key="weapon.id" class="weapon-add attribute">
             <input type="text" v-model="weapon.name" placeholder="Name">
-            <select id="abilityType" v-model="weapon.type" placeholder="Type">
+            <select id="abilityType" v-model="weapon.type">
                 <option value="Melee">Melee</option>
                 <option value="Ranged">Ranged</option>
             </select>

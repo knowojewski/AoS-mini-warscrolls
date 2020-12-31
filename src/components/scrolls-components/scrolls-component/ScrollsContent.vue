@@ -1,30 +1,40 @@
 <template>
     <div class="scrolls-box">
         <div class="box-top">
-            <h4 class="title">Your miniscrolls</h4>
+            <h4 class="title">Your warscrolls</h4>
             <img class="title-bg" src="../../../assets/your-scrolls/top-bg.png" alt="Top background">
         </div>
         <div class="box-content">
             <img class="bottom-line" src="../../../assets/your-scrolls/bottom-line.png" alt="Bottom-line">
             <img class="side-line left-line" src="../../../assets/your-scrolls/side-line.png" alt="Left line">
             <img class="side-line right-line" src="../../../assets/your-scrolls/side-line.png" alt="Right line">
-            <ContentMiddle />
+            <!-- <ContentMiddle /> -->
+            <div class="box-middle">
+                <WarscrollComponent 
+                    v-for="miniscroll in getMiniscrolls" 
+                    :key="miniscroll.id" 
+                    :miniscroll="miniscroll"
+                />
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 import { Vue, Component } from 'vue-property-decorator';
-import { Action } from 'vuex-class';
+import { Action, Getter } from 'vuex-class';
 import ContentMiddle from './ContentMiddle';
+import WarscrollComponent from '../../WarscrollComponent';
 
 @Component({
   components: {
-    ContentMiddle
+    ContentMiddle,
+    WarscrollComponent
   }
 })
 export default class ScrollsContent extends Vue {
 @Action openAddingBox;
+@Getter getMiniscrolls;
 
 }
 </script>
@@ -82,6 +92,47 @@ export default class ScrollsContent extends Vue {
             bottom: -2px;
             left: 0;
             z-index: 1;
+        }
+
+        .box-middle {
+            max-height: 750px;
+            background: #fff;
+            margin: 0 8px 0 8px;
+            padding: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            overflow-y: scroll;
+        }
+
+        .box-middle::-webkit-scrollbar {
+            background: #ffffff;
+            width: 40px;
+        }
+
+        .box-middle::-webkit-scrollbar-button:single-button {
+            display: block;
+            width: 40px;
+            height: 60px;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+        }
+
+        .box-middle::-webkit-scrollbar-button:single-button:vertical:decrement {
+            background-image: url('../../../assets/arrow-up.png');
+        }
+
+        .box-middle::-webkit-scrollbar-button:single-button:vertical:decrement:hover {
+            background-position: 50% 10%;
+        }
+
+        .box-middle::-webkit-scrollbar-button:single-button:vertical:increment {
+            background-image: url('../../../assets/arrow-down.png');
+            height: 80px;
+        }
+
+        .box-middle::-webkit-scrollbar-button:single-button:vertical:increment:hover {
+            background-position: 50% 80%;
         }
     }
 }

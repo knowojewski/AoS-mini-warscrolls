@@ -22,28 +22,49 @@
 
                     <div class="box text-box">
                         <label for="unit-info-text">Unit Mount:</label>
-                        <input type="text" v-model="mount">
+                        <input type="text" v-model="mount" placeholder="Optional">
                     </div>
                     
                     <div class="box number-box">
                         <label for="unit-info-text">Unit Move:</label>
-                        <input type="text" v-model="move">
+                        <select v-model="move">
+                            <option v-for="(number, index) in largeArray" 
+                                :key="index" :value="number">
+                                {{ number }}
+                            </option>
+                        </select>
+                        <span>"</span>
                     </div>
                     
                     <div class="box number-box">
                         <label for="unit-info-text">Unit Save:</label>
-                        <input type="text" v-model="save">
-                        <p>+</p>
+                        <select v-model="save">
+                            <option v-for="(number, index) in diceArray" 
+                                :key="index" :value="number">
+                                {{ number }}
+                            </option>
+                        </select>
+                        <span>+</span>
                     </div>
                     
                     <div class="box number-box">
                         <label for="unit-info-text">Unit Wounds:</label>
-                        <input type="text" v-model="wounds">
+                        <select v-model="wounds">
+                            <option v-for="(number, index) in largeArray" 
+                                :key="index" :value="number">
+                                {{ number }}
+                            </option>
+                        </select>
                     </div>
 
                     <div class="box number-box">
                         <label for="unit-info-text">Unit Bravery:</label>
-                        <input type="text" v-model="bravery">
+                        <select v-model="bravery">
+                            <option v-for="(number, index) in largeArray" 
+                                :key="index" :value="number">
+                                {{ number }}
+                            </option>
+                        </select>
                     </div>
 
                     <WeaponForm  />
@@ -55,7 +76,7 @@
         <div class="btns">
             <div class="btn-box">
                 <img src="../../assets/button-border.png" alt="Button border">
-                <button class="btn operation-box__btn">Clear fields</button>
+                <button @click="clearAll" class="btn operation-box__btn">Clear fields</button>
             </div>
             <div class="btn-box">
                 <img src="../../assets/button-border.png" alt="Button border">
@@ -68,7 +89,7 @@
 
 <script>
 import { Vue, Component } from 'vue-property-decorator';
-import { Getter, Action } from 'vuex-class';
+import { Getter, Action, Mutation } from 'vuex-class';
 import WeaponForm from '../adding-modal-components/WeaponForm';
 import AbilityForm from '../adding-modal-components/AbilityForm';
 import KeywordForm from '../adding-modal-components/KeywordForm';
@@ -86,6 +107,9 @@ export default class AddingBox extends Vue {
     @Getter getAbilities;
     @Getter getKeywords;
     @Action closeAddingBox;
+    @Mutation clearWeaponsArray;
+    @Mutation clearAbilitiesArray;
+    @Mutation clearKeywordsArray;
 
     allegiance = null;
     name = null;
@@ -94,6 +118,9 @@ export default class AddingBox extends Vue {
     save = null;
     wounds = null;
     bravery = null;
+
+    largeArray = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+    diceArray = [1,2,3,4,5,6];
 
     createMiniscroll() {
         let idDate = new Date();
@@ -150,6 +177,22 @@ export default class AddingBox extends Vue {
         })
         
         this.getMiniscrolls.push(miniscroll);
+
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
+    clearAll() {
+        this.allegiance = null;
+        this.name = null;
+        this.mount = null;
+        this.move = null;
+        this.save = null;
+        this.wounds = null;
+        this.bravery = null;
+
+        this.clearWeaponsArray();
+        this.clearAbilitiesArray();
+        this.clearKeywordsArray();
     }
 }
 </script>
@@ -160,6 +203,7 @@ export default class AddingBox extends Vue {
     width: 700px
     max-width: 700px
     margin-bottom: 100px
+    padding-bottom: 50px
     background: #fff
     transition: transform .5s
     z-index: 11  
@@ -242,14 +286,14 @@ export default class AddingBox extends Vue {
                     label 
                         width: 30%
 
-                    input
+                    input, select
                         border: none
                         font-size: 15px
                         height: 30px
                         padding: 4px
                         border-bottom: 1px solid #272b2a
 
-                    input:focus
+                    input:focus, select:focus
                         border-bottom: 2px solid #ff5372
                         outline: none
 
@@ -258,8 +302,13 @@ export default class AddingBox extends Vue {
                         width: 70%
 
                 .number-box
-                    input
+                    select
                         width: 10%
+                        cursor: pointer
+
+                    span 
+                        font-size: 22px
+                        font-weight: 400
 
                 .add-box
                     display: flex
