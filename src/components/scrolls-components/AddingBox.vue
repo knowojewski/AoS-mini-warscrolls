@@ -82,8 +82,7 @@
                 <img src="../../assets/button-border.png" alt="Button border">
                 <button @click="createMiniscroll" class="btn operation-box__btn">Create warscroll</button>
             </div>
-        </div>
-        
+        </div> 
     </div>
 </template>
 
@@ -119,7 +118,7 @@ export default class AddingBox extends Vue {
     wounds = null;
     bravery = null;
 
-    largeArray = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+    largeArray = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, "D3", "2xD3", "D6", "2xD6"];
     diceArray = [1,2,3,4,5,6];
 
     createMiniscroll() {

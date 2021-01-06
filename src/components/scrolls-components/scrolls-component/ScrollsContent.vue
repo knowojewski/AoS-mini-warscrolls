@@ -8,12 +8,12 @@
             <img class="bottom-line" src="../../../assets/your-scrolls/bottom-line.png" alt="Bottom-line">
             <img class="side-line left-line" src="../../../assets/your-scrolls/side-line.png" alt="Left line">
             <img class="side-line right-line" src="../../../assets/your-scrolls/side-line.png" alt="Right line">
-            <!-- <ContentMiddle /> -->
             <div class="box-middle">
                 <WarscrollComponent 
                     v-for="miniscroll in getMiniscrolls" 
                     :key="miniscroll.id" 
                     :miniscroll="miniscroll"
+                    component="scrollsContent"
                 />
             </div>
         </div>
@@ -23,12 +23,10 @@
 <script>
 import { Vue, Component } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
-import ContentMiddle from './ContentMiddle';
 import WarscrollComponent from '../../WarscrollComponent';
 
 @Component({
   components: {
-    ContentMiddle,
     WarscrollComponent
   }
 })

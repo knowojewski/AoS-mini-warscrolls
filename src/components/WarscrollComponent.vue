@@ -1,5 +1,5 @@
 <template>
-  <div class="warscroll">
+  <div @click="openScrollPanel" class="warscroll">
     <div class="warscroll-front">
         <div class="warscroll-top">
         <div class="warscroll-top-name">
@@ -72,15 +72,58 @@
         </div>
         <p class="warscroll-id">{{ miniscroll.id }}</p>
     </div>
+    <div class="warscroll-panel">
+      <div v-if="component === 'scrollsContent'" class="btns">
+          <div class="btn-box">
+              <img src="../assets/button-border.png" alt="Button border">
+              <button @click="deleteScroll(miniscroll.id)" class="btn">Delete Warscroll</button>
+          </div>
+          <div class="btn-box">
+              <img src="../assets/button-border.png" alt="Button border">
+              <button @click="addScrollToPrint(miniscroll)" class="btn">Add to Print Sheet</button>
+          </div>
+          <div class="btn-box">
+              <img src="../assets/button-border.png" alt="Button border">
+              <button class="btn">Edit Warscroll</button>
+          </div>
+          <div class="btn-box">
+              <img src="../assets/button-border.png" alt="Button border">
+              <button class="btn">Move right</button>
+          </div>
+      </div> 
+      <div v-else class="btns">
+          <div class="btn-box">
+              <img src="../assets/button-border.png" alt="Button border">
+              <button class="btn">Delete from Print</button>
+          </div>
+          <div class="btn-box">
+              <img src="../assets/button-border.png" alt="Button border">
+              <button class="btn">Move left</button>
+          </div>
+          <div class="btn-box">
+              <img src="../assets/button-border.png" alt="Button border">
+              <button class="btn">Move right</button>
+          </div>
+      </div> 
     </div>
+  </div>
 </template>
 
 <script>
 import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Action, Getter, Mutation } from 'vuex-class';
 
 @Component
 export default class WarscrollComponent extends Vue {
     @Prop(Object) miniscroll;
+    @Prop(String) component;
+
+    @Getter getScrollsToPrint;
+    @Action deleteScroll;
+    @Mutation addScrollToPrint;
+
+    openPanel = false;
+    currentScroll = document.createElement('div');
 
     weaponsTopString(weapons) {
         let weaponsArray = [];
@@ -117,6 +160,21 @@ export default class WarscrollComponent extends Vue {
 
         return shortcut;
     }
+
+    openScrollPanel(event) {
+      this.currentScroll = event.target.closest('.warscroll').children[1];
+      this.currentScroll.classList.add('turn-on');
+    }
+
+    closeScrollPanel(event) {
+      if(event.target !== this.currentScroll) {
+        this.currentScroll.classList.remove('turn-on');
+      }
+    }
+
+    created() {
+      window.addEventListener('mouseup', this.closeScrollPanel);
+    }
 }
 </script>
 
@@ -140,6 +198,36 @@ export default class WarscrollComponent extends Vue {
 
 .warscroll-id {
   display: none;
+}
+
+.warscroll-panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.801);
+  transform: translateX(100%);
+  transition: transform .3s;
+
+  .btns {
+    position: relative;
+    bottom: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .btn-box { margin-bottom: 10px; }
+
+    .btn-box:last-child { margin-bottom: 0; }
+  }
+}
+
+.warscroll-panel.turn-on {
+  transform: translateX(0);
 }
 
 .warscroll-front, .warscroll-back {
