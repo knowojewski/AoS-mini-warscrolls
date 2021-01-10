@@ -6,7 +6,8 @@
 </template>
 
 <script>
-import { Vue, Component} from 'vue-property-decorator';
+import { Vue, Component } from 'vue-property-decorator';
+import { Action, Getter } from 'vuex-class';
 import NavigationComponent from './components/NavigationComponent';
 
 @Component({
@@ -15,7 +16,12 @@ import NavigationComponent from './components/NavigationComponent';
   }
 })
 export default class App extends Vue {
-  
+  @Getter getMiniscrolls;
+  @Action loadScrollsFromLocal;
+
+  created() {
+    this.loadScrollsFromLocal();
+  }
 }
 </script>
 

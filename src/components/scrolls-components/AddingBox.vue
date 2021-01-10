@@ -106,6 +106,7 @@ export default class AddingBox extends Vue {
     @Getter getAbilities;
     @Getter getKeywords;
     @Action closeAddingBox;
+    @Action addScroll;
     @Mutation clearWeaponsArray;
     @Mutation clearAbilitiesArray;
     @Mutation clearKeywordsArray;
@@ -175,7 +176,7 @@ export default class AddingBox extends Vue {
             miniscroll.keywords.push(keyword);
         })
         
-        this.getMiniscrolls.push(miniscroll);
+        this.addScroll(miniscroll);
 
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }

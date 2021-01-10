@@ -1,74 +1,87 @@
 <template>
-  <div @click="openScrollPanel" class="warscroll">
+  <div @click="openScrollPanel" class="warscroll" ref="warscrollRef">
     <div class="warscroll-front">
         <div class="warscroll-top">
-        <div class="warscroll-top-name">
-            <p>{{ miniscroll.name }}</p>
-            <p v-show="miniscroll.mount">ON {{ miniscroll.mount }}</p>
-        </div>
-        <div class="warscroll-top-weapons">
-            <p> {{ weaponsTopString(miniscroll.weapons) }}</p>
-        </div>
+          <div class="warscroll-top-name">
+              <p>{{ miniscroll.name }}</p>
+              <p v-show="miniscroll.mount">ON {{ miniscroll.mount }}</p>
+          </div>
+          <div class="warscroll-top-weapons">
+              <p> {{ weaponsTopString(miniscroll.weapons) }}</p>
+          </div>
         </div>
         <div class="warscroll-stats">
-        <div class="stats-box">
-            <i class="fas fa-external-link-alt"></i>
-            <span>{{ miniscroll.move }}"</span>
-        </div>
-        <div class="stats-box">
-            <i class="fas fa-shield-alt"></i>
-            <span>{{ miniscroll.save }}+</span>
-        </div>
-        <div class="stats-box">
-            <i class="fas fa-skull"></i>
-            <span>{{ miniscroll.wounds }}</span>
-        </div>
-        <div class="stats-box">
-            <i class="fas fa-star"></i>
-            <span>{{ miniscroll.bravery }}</span>
-        </div>
+          <div class="stats-box">
+              <i class="fas fa-external-link-alt"></i>
+              <span>{{ miniscroll.move }}"</span>
+          </div>
+          <div class="stats-box">
+              <i class="fas fa-shield-alt"></i>
+              <span>{{ miniscroll.save }}+</span>
+          </div>
+          <div class="stats-box">
+              <i class="fas fa-skull"></i>
+              <span>{{ miniscroll.wounds }}</span>
+          </div>
+          <div class="stats-box">
+              <i class="fas fa-star"></i>
+              <span>{{ miniscroll.bravery }}</span>
+          </div>
         </div>
         <div class="warscroll-weapons-abilities">
-        <div class="warscroll-weapons">
+          <div class="warscroll-weapons">
             <div class="weapons-stats">
-            <p></p>
-            <p>Range</p>
-            <p>Attack</p>
-            <p>To Hit</p>
-            <p>To Wound</p>
-            <p>Rend</p>
-            <p>Dmg</p>
+              <p></p>
+              <p>Range</p>
+              <p>Attack</p>
+              <p>To Hit</p>
+              <p>To Wound</p>
+              <p>Rend</p>
+              <p>Dmg</p>
             </div>
             <div class="weapon" v-for="weapon in miniscroll.weapons" :key="weapon.id" :class="{'ranged': weapon.type === 'Ranged'}">
-            <p> {{ createShortcut(weapon.name) }}</p>
-            <p>
-                <i v-if="weapon.type === 'Melee'" class="fas fa-gavel"></i>
-                <i v-if="weapon.type === 'Ranged'" class="fas fa-expand-arrows-alt"></i>
-                {{ weapon.range }}"
-            </p>
-            <p>{{ weapon.attack }}</p>
-            <p>{{ weapon.hit }}+</p>
-            <p>{{ weapon.wound }}+</p>
-            <p>-{{ weapon.rend }}</p>
-            <p>{{ weapon.damage }}</p>
+              <p> {{ createShortcut(weapon.name) }}</p>
+              <p>
+                  <i v-if="weapon.type === 'Melee'" class="fas fa-gavel"></i>
+                  <i v-if="weapon.type === 'Ranged'" class="fas fa-expand-arrows-alt"></i>
+                  {{ weapon.range }}"
+              </p>
+              <p>{{ weapon.attack }}</p>
+              <p>{{ weapon.hit }}+</p>
+              <p>{{ weapon.wound }}+</p>
+              <p>-{{ weapon.rend }}</p>
+              <p>{{ weapon.damage }}</p>
             </div>
-        </div>
-        <div class="warscroll-abilities">
+          </div>
+          <div v-if="!miniscroll.frontAbilities" class="warscroll-abilities">
             <div class="ability" v-for="ability in miniscroll.abilities" :key="ability.id">
-            <p class="ability-type">
-                {{ createShortcut(ability.type) }}
-            </p>
-            <p class="ability-name">
-                {{ ability.name }}:
-            </p>
-            <p class="ability-desc">
-                {{ ability.description }}
-            </p>
-            </div>
-        </div>
+              <p class="ability-type">
+                  {{ createShortcut(ability.type) }}
+              </p>
+              <p class="ability-name">
+                  {{ ability.name }}:
+              </p>
+              <p class="ability-desc">
+                  {{ ability.description }}
+              </p>
+            </div> 
+          </div>
+          <div v-else class="warscroll-abilities">
+            <div class="ability" v-for="ability in miniscroll.frontAbilities" :key="ability.id">
+              <p class="ability-type">
+                  {{ createShortcut(ability.type) }}
+              </p>
+              <p class="ability-name">
+                  {{ ability.name }}:
+              </p>
+              <p class="ability-desc">
+                  {{ ability.description }}
+              </p>
+            </div> 
+          </div>
         </div>
         <div class="warscroll-keywords">
-        <p>{{ keywordsString(miniscroll.keywords) }}</p>
+          <p>{{ keywordsString(miniscroll.keywords) }}</p>
         </div>
         <p class="warscroll-id">{{ miniscroll.id }}</p>
     </div>
@@ -84,11 +97,15 @@
           </div>
           <div class="btn-box">
               <img src="../assets/button-border.png" alt="Button border">
-              <button class="btn">Edit Warscroll</button>
+              <button @click="editScroll(miniscroll.id)" class="btn">Edit Warscroll</button>
           </div>
-          <div class="btn-box">
-              <img src="../assets/button-border.png" alt="Button border">
-              <button class="btn">Move right</button>
+          <div class="arrow-btn-box">
+            <button @click="changePosition({ array: getMiniscrolls, id: miniscroll.id, value: -1 })" class="btn-arrow btn-left" title="Move left">
+              <img src="../assets/arrow-up.png" alt="Arrow left">
+            </button> 
+            <button @click="changePosition({ array: getMiniscrolls, id: miniscroll.id, value: 1 })" class="btn-arrow btn-right" title="Move right">
+              <img src="../assets/arrow-up.png" alt="Arrow left">
+            </button> 
           </div>
       </div> 
       <div v-else class="btns">
@@ -96,15 +113,42 @@
               <img src="../assets/button-border.png" alt="Button border">
               <button class="btn">Delete from Print</button>
           </div>
-          <div class="btn-box">
-              <img src="../assets/button-border.png" alt="Button border">
-              <button class="btn">Move left</button>
-          </div>
-          <div class="btn-box">
-              <img src="../assets/button-border.png" alt="Button border">
-              <button class="btn">Move right</button>
+          <div class="arrow-btn-box">
+            <button class="btn-arrow btn-left" title="Move left">
+              <img src="../assets/arrow-up.png" alt="Arrow left">
+            </button> 
+            <button class="btn-arrow btn-right" title="Move right">
+              <img src="../assets/arrow-up.png" alt="Arrow left">
+            </button> 
           </div>
       </div> 
+    </div>
+    <div class="warscroll-back" v-show="backCard">
+      <div class="warscroll-top">
+        <div class="warscroll-top-name">
+            <p>{{ miniscroll.name }}</p>
+            <p v-show="miniscroll.mount">ON {{ miniscroll.mount }}</p>
+        </div>
+        <div class="warscroll-top-weapons">
+            <p> {{ weaponsTopString(miniscroll.weapons) }}</p>
+        </div>
+      </div>
+      <div class="warscroll-abilities">
+        <div class="ability" v-for="ability in miniscroll.backAbilities" :key="ability.id">
+            <p class="ability-type">
+                {{ createShortcut(ability.type) }}
+            </p>
+            <p class="ability-name">
+                {{ ability.name }}:
+            </p>
+            <p class="ability-desc">
+                {{ ability.description }}
+            </p>
+          </div>  
+      </div>
+      <div class="warscroll-keywords">
+        <p>{{ keywordsString(miniscroll.keywords) }}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -119,11 +163,14 @@ export default class WarscrollComponent extends Vue {
     @Prop(String) component;
 
     @Getter getScrollsToPrint;
+    @Getter getMiniscrolls;
+    @Getter getScrollsToPrint;
     @Action deleteScroll;
+    @Action changePosition;
     @Mutation addScrollToPrint;
 
-    openPanel = false;
     currentScroll = document.createElement('div');
+    backCard = false;
 
     weaponsTopString(weapons) {
         let weaponsArray = [];
@@ -172,8 +219,37 @@ export default class WarscrollComponent extends Vue {
       }
     }
 
-    created() {
+    splitWarscroll() {
+      const front = this.$refs.warscrollRef.firstChild;
+      const frontElements = Array.from(front.children);
+      let result = 0;
+
+      frontElements.forEach( item => result += item.offsetHeight );
+
+      if(result > 232) {
+        this.backCard = true;
+        this.miniscroll.frontAbilities = [...this.miniscroll.abilities];
+        this.miniscroll.backAbilities = [];
+        let frontAbilities = this.miniscroll.frontAbilities;
+        let backAbilities = this.miniscroll.backAbilities;
+
+        let newResult = result;
+        let abilitiesOnFront = front.children[2].children[1].children;
+
+        for(let i = abilitiesOnFront.length-1; i >= 0; i--) {
+          if(newResult > 232) {
+            newResult -= abilitiesOnFront[i].offsetHeight;
+            backAbilities.unshift(...frontAbilities.splice(i, 1));
+          } else {
+            break;
+          }
+        }
+      }
+    }
+
+    mounted() {
       window.addEventListener('mouseup', this.closeScrollPanel);
+      this.miniscroll.backAbilities ? this.backCard = true : this.splitWarscroll();
     }
 }
 </script>
@@ -192,13 +268,9 @@ export default class WarscrollComponent extends Vue {
   overflow: hidden;
 }
     
-.warscroll-back {
-  border-left: 1px solid #000000;
-}
+.warscroll-back { border-left: 1px solid #000000; }
 
-.warscroll-id {
-  display: none;
-}
+.warscroll-id { display: none; }
 
 .warscroll-panel {
   display: flex;
@@ -224,16 +296,32 @@ export default class WarscrollComponent extends Vue {
 
     .btn-box:last-child { margin-bottom: 0; }
   }
+
+  .arrow-btn-box {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+
+    .btn-arrow {
+      border: 3px solid #000;
+      background: #fff;
+      transition: background .3s;
+      cursor: pointer;
+    }
+
+    .btn-arrow:hover { background: rgb(204, 204, 204); }
+
+    .btn-left { transform: rotateZ(-90deg); }
+    .btn-right { transform: rotateZ(90deg); }
+  }
 }
 
-.warscroll-panel.turn-on {
-  transform: translateX(0);
-}
+.warscroll-panel.turn-on { transform: translateX(0); }
 
 .warscroll-front, .warscroll-back {
   height: 240px;
   width: 340px;
-  padding: 5px 8px;
+  padding: 4px 8px;
   display: flex;
   flex-direction: column;
   cursor: pointer;
@@ -358,34 +446,47 @@ export default class WarscrollComponent extends Vue {
       }
     }
 
-    .warscroll-abilities {
+  }
+
+  .warscroll-abilities {
+    width: 100%;
+
+    .ability {
       width: 100%;
+      font-size: 11px;
 
-      .ability {
-        width: 100%;
-        font-size: 11px;
+      .ability-type {
+        float: left;
+        font-style: normal;
+        font-weight: bold;
+        margin-right: 3px;
+      }
 
-        .ability-type {
-          float: left;
-          font-style: normal;
-          font-weight: bold;
-          margin-right: 3px;
-        }
+      .ability-name {
+        float: left;
+        font-style: italic;
+        margin-right: 3px;
+      }
 
-        .ability-name {
-          float: left;
-          font-style: italic;
-          margin-right: 3px;
-        }
-
-        .ability-desc {
-          font-weight: bold;
-        }
+      .ability-desc {
+        font-weight: bold;
       }
     }
   }
 
   .warscroll-keywords { font-size: 10px; }
+}
+
+.warscroll-back {
+  .warscroll-abilities {
+    flex: 1;
+    padding: 5px 0;
+  }
+
+  .warscroll-keywords {
+    border-top: 1px solid #000000;
+    font-size: 10px;
+  }
 }
 
 .warscroll:hover {
