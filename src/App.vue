@@ -60,26 +60,36 @@ body {
     width: 100%;
     top: 0;
     left: 0;
+    z-index: 1;
+  }
+
+  .btn-bg {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #fff;
     z-index: 0;
+    transition: background .3s;
   }
 
   .btn {
-    position: relative;
+    position: absolute;
     font-family: 'Lora', serif;
     font-size: 18px;
     text-transform: uppercase;
     font-weight: 600;
     border: none;
-    background: #fff;
+    background: transparent;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     border-radius: 1px;
     cursor: pointer;
-    transition: background .3s;
-    z-index: 1;
+    z-index: 2;
   }
 
-  .btn:hover {
+  .btn:hover~.btn-bg {
     background: rgb(204, 204, 204);
   }
 }

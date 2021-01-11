@@ -90,14 +90,17 @@
           <div class="btn-box">
               <img src="../assets/button-border.png" alt="Button border">
               <button @click="deleteScroll(miniscroll.id)" class="btn">Delete Warscroll</button>
+              <div class="btn-bg"></div>
           </div>
           <div class="btn-box">
               <img src="../assets/button-border.png" alt="Button border">
               <button @click="addScrollToPrint(miniscroll)" class="btn">Add to Print Sheet</button>
+              <div class="btn-bg"></div>
           </div>
           <div class="btn-box">
               <img src="../assets/button-border.png" alt="Button border">
               <button @click="editScroll(miniscroll.id)" class="btn">Edit Warscroll</button>
+              <div class="btn-bg"></div>
           </div>
           <div class="arrow-btn-box">
             <button @click="changePosition({ array: getMiniscrolls, id: miniscroll.id, value: -1 })" class="btn-arrow btn-left" title="Move left">
@@ -112,6 +115,7 @@
           <div class="btn-box">
               <img src="../assets/button-border.png" alt="Button border">
               <button class="btn">Delete from Print</button>
+              <div class="btn-bg"></div>
           </div>
           <div class="arrow-btn-box">
             <button class="btn-arrow btn-left" title="Move left">
@@ -167,6 +171,7 @@ export default class WarscrollComponent extends Vue {
     @Getter getScrollsToPrint;
     @Action deleteScroll;
     @Action changePosition;
+    @Action editScroll;
     @Mutation addScrollToPrint;
 
     currentScroll = document.createElement('div');

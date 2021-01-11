@@ -3,7 +3,9 @@ const state = {
     weapons: [],
     abilities: [],
     keywords: [],
-    scrollsToPrint: []
+    scrollsToPrint: [],
+
+    editMode: false
 };
 
 const getters = {
@@ -11,7 +13,8 @@ const getters = {
     getWeapons: state => state.weapons,
     getAbilities: state => state.abilities,
     getKeywords: state => state.keywords,
-    getScrollsToPrint: state => state.scrollsToPrint
+    getScrollsToPrint: state => state.scrollsToPrint,
+    getEditMode: state => state.editMode
 };
 
 const actions = {
@@ -42,6 +45,15 @@ const actions = {
         }
 
         dispatch('saveScrollToLocal');
+    }, 
+
+    editScroll({ commit }, id) {
+        console.log(id);
+        commit('editModeOn');
+    },
+
+    cancelEdit({ commit }) {
+        commit('editModeOff');
     }
 };
 const mutations = {
@@ -50,6 +62,8 @@ const mutations = {
     clearKeywordsArray: state => state.keywords = [],
     addScroll: (state, miniscroll) => state.miniscrolls.push(miniscroll), 
     addScrollToPrint: (state, miniscroll) => state.scrollsToPrint.push(miniscroll), 
+    editModeOn: state => state.editMode = true,
+    editModeOff: state => state.editMode = false
 };
 
 export default {

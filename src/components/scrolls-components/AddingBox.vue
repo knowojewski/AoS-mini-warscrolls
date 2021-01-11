@@ -4,7 +4,8 @@
         <img class="side-line left-line" src="../../assets/miniscrolls/side-line.png" alt="Left line">
         <img class="side-line right-line" src="../../assets/miniscrolls/side-line.png" alt="Right line">
         <div class="adding-box__top">
-            <h2 class="adding-box__heading">Create Warscroll</h2>
+            <h2 v-if="!getEditMode" class="adding-box__heading">Create Warscroll</h2>
+            <h2 v-else class="adding-box__heading">Edit Warscroll</h2>
             <img class="top-bg" src="../../assets/miniscrolls/top-bg.png" alt="Top background">
         </div>
         <div class="adding-box__main">
@@ -74,13 +75,21 @@
             </div>
         </div>
         <div class="btns">
-            <div class="btn-box">
+            <div v-if="getEditMode" class="btn-box">
                 <img src="../../assets/button-border.png" alt="Button border">
-                <button @click="clearAll" class="btn operation-box__btn">Clear fields</button>
+                <button @click="cancelEdit" class="btn operation-box__btn">Cancel</button>
+                <div class="btn-bg"></div>
             </div>
             <div class="btn-box">
                 <img src="../../assets/button-border.png" alt="Button border">
-                <button @click="createMiniscroll" class="btn operation-box__btn">Create warscroll</button>
+                <button @click="clearAll" class="btn operation-box__btn">Clear fields</button>
+                <div class="btn-bg"></div>
+            </div>
+            <div class="btn-box">
+                <img src="../../assets/button-border.png" alt="Button border">
+                <button v-if="!getEditMode" @click="createMiniscroll" class="btn operation-box__btn">Create warscroll</button>
+                <button v-else @click="confirmEdit" class="btn operation-box__btn">Confirm edition</button>
+                <div class="btn-bg"></div>
             </div>
         </div> 
     </div>
@@ -105,8 +114,10 @@ export default class AddingBox extends Vue {
     @Getter getWeapons;
     @Getter getAbilities;
     @Getter getKeywords;
+    @Getter getEditMode;
     @Action closeAddingBox;
     @Action addScroll;
+    @Action cancelEdit;
     @Mutation clearWeaponsArray;
     @Mutation clearAbilitiesArray;
     @Mutation clearKeywordsArray;
