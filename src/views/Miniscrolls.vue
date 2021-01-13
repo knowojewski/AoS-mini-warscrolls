@@ -4,7 +4,7 @@
       <div class="container" :class="{'dark-bg': getEditMode}">
         <AddingBox />
         <PrintSheet v-if="!getEditMode" />
-        <WarscrollComponent v-else :miniscroll="getMiniscrolls[1]" />
+        <WarscrollComponent v-else :miniscroll="getScrollToEdit" />
       </div>
     </div>
     <div class="row">
@@ -32,6 +32,7 @@ import { Getter } from 'vuex-class';
 export default class Miniscrolls extends Vue {
   @Getter getMiniscrolls;
   @Getter getEditMode;
+  @Getter getScrollToEdit;
 
 }
 </script>

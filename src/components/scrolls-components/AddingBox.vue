@@ -13,22 +13,31 @@
                 <form class="unit-infos">
                     <div class="box text-box">
                         <label for="unit-info-text">Unit Allegiance:</label>
-                        <input type="text" v-model="allegiance">
+                        <input v-if="!getEditMode" type="text" v-model="allegiance"> 
+                        <input v-else type="text" v-model="getScrollToEdit.allegiance"> 
                     </div>
 
                     <div class="box text-box">
                         <label for="unit-info-text">Unit Name:</label>
-                        <input type="text" v-model="name">
+                        <input v-if="!getEditMode" type="text" v-model="name">
+                        <input v-else type="text" v-model="getScrollToEdit.name">
                     </div>
 
                     <div class="box text-box">
                         <label for="unit-info-text">Unit Mount:</label>
-                        <input type="text" v-model="mount" placeholder="Optional">
+                        <input v-if="!getEditMode" type="text" v-model="mount" placeholder="Optional">
+                        <input v-else type="text" v-model="getScrollToEdit.mount" placeholder="Optional">
                     </div>
                     
                     <div class="box number-box">
                         <label for="unit-info-text">Unit Move:</label>
-                        <select v-model="move">
+                        <select v-if="!getEditMode" v-model="move">
+                            <option v-for="(number, index) in largeArray" 
+                                :key="index" :value="number">
+                                {{ number }}
+                            </option>
+                        </select>
+                        <select v-else v-model="getScrollToEdit.move">
                             <option v-for="(number, index) in largeArray" 
                                 :key="index" :value="number">
                                 {{ number }}
@@ -39,7 +48,13 @@
                     
                     <div class="box number-box">
                         <label for="unit-info-text">Unit Save:</label>
-                        <select v-model="save">
+                        <select v-if="!getEditMode" v-model="save">
+                            <option v-for="(number, index) in diceArray" 
+                                :key="index" :value="number">
+                                {{ number }}
+                            </option>
+                        </select>
+                        <select v-else v-model="getScrollToEdit.save">
                             <option v-for="(number, index) in diceArray" 
                                 :key="index" :value="number">
                                 {{ number }}
@@ -50,7 +65,13 @@
                     
                     <div class="box number-box">
                         <label for="unit-info-text">Unit Wounds:</label>
-                        <select v-model="wounds">
+                        <select v-if="!getEditMode" v-model="wounds">
+                            <option v-for="(number, index) in largeArray" 
+                                :key="index" :value="number">
+                                {{ number }}
+                            </option>
+                        </select>
+                        <select v-else v-model="getScrollToEdit.wounds">
                             <option v-for="(number, index) in largeArray" 
                                 :key="index" :value="number">
                                 {{ number }}
@@ -60,7 +81,13 @@
 
                     <div class="box number-box">
                         <label for="unit-info-text">Unit Bravery:</label>
-                        <select v-model="bravery">
+                        <select v-if="!getEditMode" v-model="bravery">
+                            <option v-for="(number, index) in largeArray" 
+                                :key="index" :value="number">
+                                {{ number }}
+                            </option>
+                        </select>
+                        <select v-else v-model="getScrollToEdit.bravery">
                             <option v-for="(number, index) in largeArray" 
                                 :key="index" :value="number">
                                 {{ number }}
@@ -71,8 +98,13 @@
                     <WeaponForm  />
                     <AbilityForm />
                     <KeywordForm />
+
                 </form>
             </div>
+        </div>
+        <div class="preview-scroll">
+            <p class="preview-title">Warscroll Preview</p>
+            <WarscrollComponent :miniscroll="getPreviewScroll" :preview="true"/>
         </div>
         <div class="btns">
             <div v-if="getEditMode" class="btn-box">
@@ -88,7 +120,7 @@
             <div class="btn-box">
                 <img src="../../assets/button-border.png" alt="Button border">
                 <button v-if="!getEditMode" @click="createMiniscroll" class="btn operation-box__btn">Create warscroll</button>
-                <button v-else @click="confirmEdit" class="btn operation-box__btn">Confirm edition</button>
+                <!-- <button v-else @click="confirmEdit" class="btn operation-box__btn">Confirm edition</button> -->
                 <div class="btn-bg"></div>
             </div>
         </div> 
@@ -96,25 +128,29 @@
 </template>
 
 <script>
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Watch } from 'vue-property-decorator';
 import { Getter, Action, Mutation } from 'vuex-class';
 import WeaponForm from '../adding-modal-components/WeaponForm';
 import AbilityForm from '../adding-modal-components/AbilityForm';
 import KeywordForm from '../adding-modal-components/KeywordForm';
+import WarscrollComponent from '../WarscrollComponent';
 
 @Component({
     components: {
         WeaponForm,
         AbilityForm,
-        KeywordForm
+        KeywordForm,
+        WarscrollComponent
     }
 })
 export default class AddingBox extends Vue {
+    @Getter getPreviewScroll;
     @Getter getMiniscrolls;
     @Getter getWeapons;
     @Getter getAbilities;
     @Getter getKeywords;
     @Getter getEditMode;
+    @Getter getScrollToEdit;
     @Action closeAddingBox;
     @Action addScroll;
     @Action cancelEdit;
@@ -132,6 +168,28 @@ export default class AddingBox extends Vue {
 
     largeArray = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, "D3", "2xD3", "D6", "2xD6"];
     diceArray = [1,2,3,4,5,6];
+
+    @Watch('getEditMode')
+    onEditModeChange(){
+        if(this.getEditMode === true) {
+            console.log('Edit mode changed')
+
+        }
+    }
+
+    @Watch('name')
+    onNameChange(val) { this.getPreviewScroll.name = val; }
+    @Watch('mount')
+    onMountChange(val) { this.getPreviewScroll.mount = val; }
+    @Watch('move')
+    onMoveChange(val) { this.getPreviewScroll.move = val; }
+    @Watch('save')
+    onSaveChange(val) { this.getPreviewScroll.save = val; }
+    @Watch('wounds')
+    onWoundsChange(val) { this.getPreviewScroll.wounds = val; }
+    @Watch('bravery')
+    onBraveryChange(val) { this.getPreviewScroll.bravery = val; }
+
 
     createMiniscroll() {
         let idDate = new Date();
@@ -214,10 +272,23 @@ export default class AddingBox extends Vue {
     width: 700px
     max-width: 700px
     margin-bottom: 100px
-    padding-bottom: 50px
+    padding-bottom: 10px
     background: #fff
     transition: transform .5s
     z-index: 11  
+
+    .preview-scroll
+        display: flex
+        flex-direction: column
+        justify-content: center
+        align-items: center
+
+        .preview-title 
+            border-top: 1px solid #000
+            width: 90%
+            text-align: center
+            font-size: 18px
+            margin: 4px 0
 
     .bottom-line
         width: 100% 
@@ -269,7 +340,7 @@ export default class AddingBox extends Vue {
 
     .adding-box__main
         width: 100%
-        height: 600px
+        height: 580px
         background: #fff
         overflow-y: scroll
         transition: height .8s
@@ -279,7 +350,7 @@ export default class AddingBox extends Vue {
             flex-direction: column
             width: 100%
             height: 100%
-            padding: 30px
+            padding: 0 30px 0 30px
             transition: opacity .2s
 
             .unit-infos 

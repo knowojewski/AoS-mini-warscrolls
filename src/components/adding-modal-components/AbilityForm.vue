@@ -16,7 +16,7 @@
                 </select>
                 <input type="text" v-model="ability.name" placeholder="Name">
                 <input type="text" v-model="ability.description" placeholder="Description">
-                <button class="attributes-btn" @click="deleteForm({array: getAbilities, id: ability.id})">
+                <button class="attributes-btn" @click="deleteForm({array: getAbilities, id: ability.id, previewArray: getPreviewScroll.abilities})">
                     <i class="far fa-trash-alt"></i>
                 </button>
             </div>
@@ -26,12 +26,15 @@
 
 <script>
 import { Vue, Component } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
+import { Action, Getter, Mutation } from 'vuex-class';
 
 @Component
 export default class AbilityForm extends Vue {
     @Getter getAbilities;
+    @Getter getPreviewScroll;
     @Action deleteForm;
+    @Mutation addAbility;
+    @Mutation addPreviewAbility;
 
     addAbilityForm() {
         let idDate = new Date();
@@ -44,7 +47,11 @@ export default class AbilityForm extends Vue {
             description: null  
         };
 
-        this.getAbilities.push(abilityForm);
+        this.addPreviewAbility(abilityForm);
+        if(this.getPreviewScroll.backAbilities) 
+            this.getPreviewScroll.backAbilities.push(abilityForm);
+
+        this.addAbility(abilityForm);
     }
 }
 </script>

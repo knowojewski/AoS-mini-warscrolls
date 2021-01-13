@@ -1,5 +1,5 @@
 <template>
-  <div @click="openScrollPanel" class="warscroll" ref="warscrollRef">
+  <div @click="openScrollPanel" class="warscroll" :class="{'no-hover': getEditMode}" ref="warscrollRef">
     <div class="warscroll-front">
         <div class="warscroll-top">
           <div class="warscroll-top-name">
@@ -158,17 +158,19 @@
 </template>
 
 <script>
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { Action, Getter, Mutation } from 'vuex-class';
 
 @Component
 export default class WarscrollComponent extends Vue {
     @Prop(Object) miniscroll;
+    @Prop(Boolean) preview;
     @Prop(String) component;
 
-    @Getter getScrollsToPrint;
     @Getter getMiniscrolls;
     @Getter getScrollsToPrint;
+    @Getter getEditMode;
+    @Getter getPreviewScroll;
     @Action deleteScroll;
     @Action changePosition;
     @Action editScroll;
@@ -176,6 +178,21 @@ export default class WarscrollComponent extends Vue {
 
     currentScroll = document.createElement('div');
     backCard = false;
+
+    @Watch('getPreviewScroll', { deep: true })
+    onAbilitiesChange() {
+      if(this.preview) {
+        this.splitWarscroll();
+        console.log('watcher run')
+      }
+    }
+
+    // @Watch('getPreviewScroll.abilities', { deep: false })
+    // onAbilitiesChange() {
+    //   if(this.preview) {
+    //     this.splitWarscroll();
+    //   }
+    // }
 
     weaponsTopString(weapons) {
         let weaponsArray = [];
@@ -204,18 +221,22 @@ export default class WarscrollComponent extends Vue {
     }
 
     createShortcut(value) {
-        let shortcut = value.split(' ');
+        if(value) {
+          let shortcut = value.split(' ');
 
-        shortcut = shortcut.map(element => {
-        return element.split('').splice(0, 1).join('');
-        }).join('');
+          shortcut = shortcut.map(element => {
+          return element.split('').splice(0, 1).join('');
+          }).join('');
 
-        return shortcut;
+          return shortcut;
+        }
     }
 
     openScrollPanel(event) {
-      this.currentScroll = event.target.closest('.warscroll').children[1];
-      this.currentScroll.classList.add('turn-on');
+      if(!this.getEditMode) {
+        this.currentScroll = event.target.closest('.warscroll').children[1];
+        this.currentScroll.classList.add('turn-on');
+      }
     }
 
     closeScrollPanel(event) {
@@ -227,11 +248,18 @@ export default class WarscrollComponent extends Vue {
     splitWarscroll() {
       const front = this.$refs.warscrollRef.firstChild;
       const frontElements = Array.from(front.children);
+      const backElements = Array.from(this.$refs.warscrollRef.children[2].children[1].children);
+
       let result = 0;
+      let resultBack = 0;
 
       frontElements.forEach( item => result += item.offsetHeight );
+      backElements.forEach( item => resultBack += item.offsetHeight );
 
-      if(result > 232) {
+      // let bothResults = result + resultBack;
+
+      if(result > 232 ) {
+        console.log('run');
         this.backCard = true;
         this.miniscroll.frontAbilities = [...this.miniscroll.abilities];
         this.miniscroll.backAbilities = [];
@@ -271,6 +299,7 @@ export default class WarscrollComponent extends Vue {
   margin-bottom: 2px;
   position: relative;
   overflow: hidden;
+  cursor: pointer;
 }
     
 .warscroll-back { border-left: 1px solid #000000; }
@@ -329,7 +358,6 @@ export default class WarscrollComponent extends Vue {
   padding: 4px 8px;
   display: flex;
   flex-direction: column;
-  cursor: pointer;
 
   .warscroll-top {
     border-bottom: 1px solid #000000;
@@ -498,5 +526,15 @@ export default class WarscrollComponent extends Vue {
   transform: translateY(-3px);
   border: 1px solid #333;
   box-shadow: 0 0 10px 1px #333;
+}
+
+.warscroll.no-hover {
+  cursor: default;
+}
+
+.no-hover:hover {
+  transform: none;
+  border: 1px solid #000000;
+  box-shadow: none;
 }
 </style>

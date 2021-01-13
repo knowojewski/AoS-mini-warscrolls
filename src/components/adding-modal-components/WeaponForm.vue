@@ -20,7 +20,7 @@
             <input type="text" v-model="weapon.wound" placeholder="To Wound">
             <input type="text" v-model="weapon.rend" placeholder="Rend">
             <input type="text" v-model="weapon.damage" placeholder="Damage">
-            <button class="attributes-btn" @click="deleteForm({array: getWeapons, id: weapon.id})">
+            <button class="attributes-btn" @click="deleteForm({array: getWeapons, id: weapon.id, previewArray: getPreviewScroll.weapons})">
                 <i class="far fa-trash-alt"></i>
             </button>
         </div>
@@ -30,12 +30,14 @@
 
 <script>
 import { Vue, Component } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
+import { Action, Getter, Mutation } from 'vuex-class';
 
 @Component
 export default class WeaponForm extends Vue {
     @Getter getWeapons;
+    @Getter getPreviewScroll;
     @Action deleteForm;
+    @Mutation addWeapon;
 
     addWeaponForm() {
         let idDate = new Date();
@@ -53,7 +55,8 @@ export default class WeaponForm extends Vue {
             damage: null    
         };
 
-        this.getWeapons.push(weapon);
+        this.getPreviewScroll.weapons.push(weapon);
+        this.addWeapon(weapon);
     }
 }
 </script>
