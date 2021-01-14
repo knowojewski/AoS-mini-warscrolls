@@ -1,6 +1,6 @@
 const state = {
     previewScroll: {
-        id: null,
+        id: 'preview',
         allegiance: null,
         name: null,
         mount: null,
@@ -49,6 +49,19 @@ const actions = {
         previewArray.splice(index, 1);
     },
 
+    deleteBackOrFront({ state }, id) {
+        if(state.previewScroll.backAbilities) {
+            const inFront = state.previewScroll.frontAbilities.findIndex(item => item.id === id);
+            const inBack = state.previewScroll.backAbilities.findIndex(item => item.id === id);
+
+            if(inFront === -1) {
+                state.previewScroll.backAbilities.splice(inBack, 1);
+            } else if(inBack === -1) {
+                state.previewScroll.frontAbilities.splice(inFront, 1);
+            }
+        }
+    },
+
     deleteScroll({ state, dispatch }, id) {
         const index = state.miniscrolls.findIndex(item => item.id === id);
         state.miniscrolls.splice(index, 1);
@@ -90,7 +103,11 @@ const mutations = {
     addWeapon: (state, weapon) => state.weapons.push(weapon),
     addAbility: (state, ability) => state.abilities.push(ability),
     addKeyword: (state, keyword) => state.keywords.push(keyword),
-    addPreviewAbility: (state, ability) => state.previewScroll.abilities.push(ability)
+    addPreviewAbility: (state, ability) => state.previewScroll.abilities.push(ability),
+    addPreviewBackAbility: (state, ability) => {
+        if(state.previewScroll.backAbilities) 
+            state.previewScroll.backAbilities.push(ability);
+    }
 };
 
 export default {

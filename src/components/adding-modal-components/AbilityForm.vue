@@ -16,7 +16,7 @@
                 </select>
                 <input type="text" v-model="ability.name" placeholder="Name">
                 <input type="text" v-model="ability.description" placeholder="Description">
-                <button class="attributes-btn" @click="deleteForm({array: getAbilities, id: ability.id, previewArray: getPreviewScroll.abilities})">
+                <button class="attributes-btn" @click="deleteAbility({array: getAbilities, id: ability.id, previewArray: getPreviewScroll.abilities})">
                     <i class="far fa-trash-alt"></i>
                 </button>
             </div>
@@ -33,8 +33,10 @@ export default class AbilityForm extends Vue {
     @Getter getAbilities;
     @Getter getPreviewScroll;
     @Action deleteForm;
+    @Action deleteBackOrFront;
     @Mutation addAbility;
     @Mutation addPreviewAbility;
+    @Mutation addPreviewBackAbility;
 
     addAbilityForm() {
         let idDate = new Date();
@@ -48,10 +50,15 @@ export default class AbilityForm extends Vue {
         };
 
         this.addPreviewAbility(abilityForm);
-        if(this.getPreviewScroll.backAbilities) 
-            this.getPreviewScroll.backAbilities.push(abilityForm);
-
+        this.addPreviewBackAbility(abilityForm);
         this.addAbility(abilityForm);
+
+        this.$forceUpdate();
+    }
+
+    deleteAbility({array, id, previewArray}) {
+        this.deleteForm({array, id, previewArray});
+        this.deleteBackOrFront(id);
     }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div @click="openScrollPanel" class="warscroll" :class="{'no-hover': getEditMode}" ref="warscrollRef">
+  <div @click="openScrollPanel" class="warscroll" :class="{'no-hover': getEditMode || miniscroll.id === 'preview'}" ref="warscrollRef">
     <div class="warscroll-front">
         <div class="warscroll-top">
           <div class="warscroll-top-name">
@@ -182,17 +182,12 @@ export default class WarscrollComponent extends Vue {
     @Watch('getPreviewScroll', { deep: true })
     onAbilitiesChange() {
       if(this.preview) {
-        this.splitWarscroll();
-        console.log('watcher run')
+        setTimeout(() => {
+          this.splitWarscroll();
+        }, 10);
+        this.$forceUpdate();
       }
     }
-
-    // @Watch('getPreviewScroll.abilities', { deep: false })
-    // onAbilitiesChange() {
-    //   if(this.preview) {
-    //     this.splitWarscroll();
-    //   }
-    // }
 
     weaponsTopString(weapons) {
         let weaponsArray = [];
@@ -233,7 +228,7 @@ export default class WarscrollComponent extends Vue {
     }
 
     openScrollPanel(event) {
-      if(!this.getEditMode) {
+      if(!this.getEditMode && this.miniscroll.id !== 'preview') {
         this.currentScroll = event.target.closest('.warscroll').children[1];
         this.currentScroll.classList.add('turn-on');
       }
@@ -247,19 +242,23 @@ export default class WarscrollComponent extends Vue {
 
     splitWarscroll() {
       const front = this.$refs.warscrollRef.firstChild;
-      const frontElements = Array.from(front.children);
       const backElements = Array.from(this.$refs.warscrollRef.children[2].children[1].children);
 
-      let result = 0;
+      const frontTop = front.children[0].offsetHeight;
+      const frontSkills = front.children[1].offsetHeight;
+      const frontWeapons = front.children[2].children[0].offsetHeight;
+      const frontAbilities = front.children[2].children[1].offsetHeight;
+      const frontKeywords = front.children[3].offsetHeight;
+
+      let result = frontTop + frontSkills + frontWeapons + frontAbilities + frontKeywords;
       let resultBack = 0;
 
-      frontElements.forEach( item => result += item.offsetHeight );
       backElements.forEach( item => resultBack += item.offsetHeight );
 
       // let bothResults = result + resultBack;
 
-      if(result > 232 ) {
-        console.log('run');
+      if(result > 230 ) {
+        console.log('split run if statement');
         this.backCard = true;
         this.miniscroll.frontAbilities = [...this.miniscroll.abilities];
         this.miniscroll.backAbilities = [];
@@ -270,14 +269,38 @@ export default class WarscrollComponent extends Vue {
         let abilitiesOnFront = front.children[2].children[1].children;
 
         for(let i = abilitiesOnFront.length-1; i >= 0; i--) {
-          if(newResult > 232) {
+          if(newResult > 230) {
             newResult -= abilitiesOnFront[i].offsetHeight;
             backAbilities.unshift(...frontAbilities.splice(i, 1));
           } else {
             break;
           }
         }
+      } else if(result <= 230 && this.miniscroll.backAbilities) {
+        console.log('result <= 230');
+        const frontAbilities = this.miniscroll.frontAbilities;
+        const backAbilities = this.miniscroll.backAbilities;
+
+        for(let i = 0; i < backElements.length; i++) {
+          if(result + backElements[i].offsetHeight <= 230) {
+            result += backElements[i].offsetHeight;
+            frontAbilities.push(...backAbilities.splice(i, 1));
+
+          } else {
+            break;
+          }
+        }
+
+        if(backAbilities.length === 0) {
+          console.log('back abilities empty')
+          this.backCard = false;
+          delete this.miniscroll.frontAbilities; 
+          delete this.miniscroll.backAbilities; 
+        }
+        console.log(frontAbilities, backAbilities)
+
       }
+      this.$forceUpdate();
     }
 
     mounted() {
@@ -421,7 +444,8 @@ export default class WarscrollComponent extends Vue {
       width: 95%;
       display: flex;
       flex-direction: column;
-      margin: 5px auto;
+      margin: 0 auto;
+      padding: 5px 0;
 
       .weapons-stats, .weapon {
         width: 100%;
@@ -455,7 +479,6 @@ export default class WarscrollComponent extends Vue {
       }
 
       .weapon {
-        // margin-top: 2px;
         order: 2;
 
         p {
@@ -487,6 +510,8 @@ export default class WarscrollComponent extends Vue {
     .ability {
       width: 100%;
       font-size: 11px;
+      min-height: 12px;
+      // display: flex;
 
       .ability-type {
         float: left;
