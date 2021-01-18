@@ -12,20 +12,37 @@
         </div>
         <div class="warscroll-stats">
           <div class="stats-box">
+              <span v-if="miniscroll.move.type === 'Fly'" class="move-type">{{ miniscroll.move.type }}</span>
               <i class="fas fa-external-link-alt"></i>
-              <span>{{ miniscroll.move }}"</span>
+              <span>{{ miniscroll.move.value }}"</span>
+              <div class="reminders">
+                <span class="reminder reminder-first">{{ miniscroll.reminders.move.first }}</span>
+                <span class="reminder reminder-second">{{ miniscroll.reminders.move.second }}</span>
+              </div>
           </div>
           <div class="stats-box">
               <i class="fas fa-shield-alt"></i>
               <span>{{ miniscroll.save }}+</span>
+              <div class="reminders">
+                <span class="reminder reminder-first">{{ miniscroll.reminders.save.first }}</span>
+                <span class="reminder reminder-second">{{ miniscroll.reminders.save.second }}</span>
+              </div>
           </div>
           <div class="stats-box">
               <i class="fas fa-skull"></i>
               <span>{{ miniscroll.wounds }}</span>
+              <div class="reminders">
+                <span class="reminder reminder-first">{{ miniscroll.reminders.wounds.first }}</span>
+                <span class="reminder reminder-second">{{ miniscroll.reminders.wounds.second }}</span>
+              </div>
           </div>
           <div class="stats-box">
               <i class="fas fa-star"></i>
               <span>{{ miniscroll.bravery }}</span>
+              <div class="reminders">
+                <span class="reminder reminder-first">{{ miniscroll.reminders.bravery.first }}</span>
+                <span class="reminder reminder-second">{{ miniscroll.reminders.bravery.second }}</span>
+              </div>
           </div>
         </div>
         <div class="warscroll-weapons-abilities">
@@ -34,19 +51,29 @@
               <p></p>
               <p>Range</p>
               <p>Attack</p>
-              <p>To Hit</p>
-              <p>To Wound</p>
+              <p>Hit</p>
+              <p>Wound</p>
               <p>Rend</p>
               <p>Dmg</p>
             </div>
             <div class="weapon" v-for="weapon in miniscroll.weapons" :key="weapon.id" :class="{'ranged': weapon.type === 'Ranged'}">
               <p> {{ createShortcut(weapon.name) }}</p>
               <p>
-                  <i v-if="weapon.type === 'Melee'" class="fas fa-gavel"></i>
-                  <i v-if="weapon.type === 'Ranged'" class="fas fa-expand-arrows-alt"></i>
-                  {{ weapon.range }}"
+                <i v-if="weapon.type === 'Melee'" class="fas fa-gavel"></i>
+                <i v-if="weapon.type === 'Ranged'" class="fas fa-expand-arrows-alt"></i>
+                {{ weapon.range }}
+                <span class="reminders">
+                  <span class="reminder reminder-top">+1L</span>
+                  <span class="reminder reminder-bottom">+1L</span>
+                </span>
               </p>
-              <p>{{ weapon.attack }}</p>
+              <p>
+                {{ weapon.attack }}
+                <span class="reminders">
+                  <span class="reminder reminder-top">+1L</span>
+                  <span class="reminder reminder-bottom">+1L</span>
+                </span>
+              </p>
               <p>{{ weapon.hit }}+</p>
               <p>{{ weapon.wound }}+</p>
               <p>-{{ weapon.rend }}</p>
@@ -244,6 +271,8 @@ export default class WarscrollComponent extends Vue {
       const front = this.$refs.warscrollRef.firstChild;
       const backElements = Array.from(this.$refs.warscrollRef.children[2].children[1].children);
 
+      console.log(front)
+
       const frontTop = front.children[0].offsetHeight;
       const frontSkills = front.children[1].offsetHeight;
       const frontWeapons = front.children[2].children[0].offsetHeight;
@@ -255,10 +284,7 @@ export default class WarscrollComponent extends Vue {
 
       backElements.forEach( item => resultBack += item.offsetHeight );
 
-      // let bothResults = result + resultBack;
-
       if(result > 230 ) {
-        console.log('split run if statement');
         this.backCard = true;
         this.miniscroll.frontAbilities = [...this.miniscroll.abilities];
         this.miniscroll.backAbilities = [];
@@ -277,7 +303,6 @@ export default class WarscrollComponent extends Vue {
           }
         }
       } else if(result <= 230 && this.miniscroll.backAbilities) {
-        console.log('result <= 230');
         const frontAbilities = this.miniscroll.frontAbilities;
         const backAbilities = this.miniscroll.backAbilities;
 
@@ -292,13 +317,10 @@ export default class WarscrollComponent extends Vue {
         }
 
         if(backAbilities.length === 0) {
-          console.log('back abilities empty')
           this.backCard = false;
           delete this.miniscroll.frontAbilities; 
           delete this.miniscroll.backAbilities; 
         }
-        console.log(frontAbilities, backAbilities)
-
       }
       this.$forceUpdate();
     }
@@ -417,13 +439,15 @@ export default class WarscrollComponent extends Vue {
   .warscroll-stats {
     width: 100%;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
     border-bottom: 1px solid #000000;
     padding: 3px 0;
 
     .stats-box {
+      position: relative;
       display: flex;
       align-items: center;
+
         
       i {
         font-size: 23px;
@@ -431,6 +455,29 @@ export default class WarscrollComponent extends Vue {
       }
 
       span { font-size: 20px; }
+
+      .move-type {
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        // transform: rotateZ(-90deg);
+        margin-right: 1px;
+      }
+
+      .reminders {
+        position: relative;
+        padding-left: 3px;
+      }
+
+      .reminder {
+        position: absolute;
+        font-size: 10px;
+        left: 3px;
+      }
+
+      .reminder-first { bottom: 2px; }
+
+      .reminder-second { top: 2px; }
     }
 
   }
@@ -460,6 +507,26 @@ export default class WarscrollComponent extends Vue {
           display: flex;
           justify-content: center;
           align-items: center;
+
+          .reminders {
+            height: 100%;
+            margin-left: 2px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            .reminder {
+              font-size: 8px;
+            }
+
+            .reminder-top {
+
+            }
+
+            .reminder-bottom {
+
+            }
+          }
         }
 
         p:nth-child(1) {
@@ -468,13 +535,13 @@ export default class WarscrollComponent extends Vue {
           border: none;
         }
 
-        p:nth-child(2) { width: 17%; }
+        p:nth-child(2) { width: 20%; }
             
-        p:nth-child(5) { width: 22%; }
+        p:nth-child(5) { width: 16%; }
 
         p:nth-child(7) {
           border-right: 1px solid #000000;
-          width: 11%;
+          width: 14%;
         }
       }
 
@@ -487,7 +554,7 @@ export default class WarscrollComponent extends Vue {
           font-weight: bold;
           border-top: none;
 
-          i { margin-right: 5px; } 
+          i { margin-right: 2px; } 
         }
 
         p:nth-child(1) {
@@ -532,7 +599,10 @@ export default class WarscrollComponent extends Vue {
     }
   }
 
-  .warscroll-keywords { font-size: 10px; }
+  .warscroll-keywords { 
+    min-height: 11px;
+    font-size: 10px; 
+  }
 }
 
 .warscroll-back {

@@ -4,10 +4,31 @@ const state = {
         allegiance: null,
         name: null,
         mount: null,
-        move: null,
+        move: {
+            type: null,
+            value: null
+        },
         save: null,
         wounds: null,
         bravery: null,
+        reminders: {
+            move: {
+                first: null,
+                second: null
+            },
+            save: {
+                first: null,
+                second: null
+            },
+            wounds: {
+                first: null,
+                second: null
+            },
+            bravery: {
+                first: null,
+                second: null
+            }
+        },
         weapons: [],
         abilities: [],
         keywords: []
@@ -84,18 +105,40 @@ const actions = {
         const miniscroll = state.miniscrolls.find( scroll => scroll.id === id);
         
         state.scrollToEdit = {...miniscroll};
-
+        state.weapons = [...miniscroll.weapons];
+        state.abilities = [...miniscroll.abilities];
+        state.keywords = [...miniscroll.keywords];
+        state.previewScroll.weapons = [...miniscroll.weapons];
+        state.previewScroll.abilities = [...miniscroll.abilities];
+        state.previewScroll.keywords = [...miniscroll.keywords];
+        
         commit('editModeOn');
     },
 
     cancelEdit({ commit }) {
         commit('editModeOff');
+    },
+
+    confirmEdit({ state }) {
+        console.log('confirm');
+        console.log(state)
+
+        // state.miniscrolls.find( scroll => scroll.id === state.scrollToEdit.id) = {...state.previewScroll};
     }
 };
 const mutations = {
-    clearWeaponsArray: state => state.weapons = [],
-    clearAbilitiesArray: state => state.abilities = [],
-    clearKeywordsArray: state => state.keywords = [],
+    clearWeaponsArray: state => {
+        state.weapons = [];
+        state.previewScroll.weapons = [];
+    },
+    clearAbilitiesArray: state => {
+        state.abilities = []; 
+        state.previewScroll.abilities = []; 
+    },
+    clearKeywordsArray: state => {
+        state.keywords = [];
+        state.previewScroll.keywords = [];
+    },
     addScroll: (state, miniscroll) => state.miniscrolls.push(miniscroll), 
     addScrollToPrint: (state, miniscroll) => state.scrollsToPrint.push(miniscroll), 
     editModeOn: state => state.editMode = true,

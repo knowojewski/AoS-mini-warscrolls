@@ -4,7 +4,7 @@
       <div class="container" :class="{'dark-bg': getEditMode}">
         <AddingBox />
         <PrintSheet v-if="!getEditMode" />
-        <WarscrollComponent v-else :miniscroll="getScrollToEdit" />
+        <!-- <WarscrollComponent v-else :miniscroll="getScrollToEdit" /> -->
       </div>
     </div>
     <div class="row">

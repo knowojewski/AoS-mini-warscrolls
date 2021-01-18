@@ -20,7 +20,14 @@
             <input type="text" v-model="weapon.wound" placeholder="To Wound">
             <input type="text" v-model="weapon.rend" placeholder="Rend">
             <input type="text" v-model="weapon.damage" placeholder="Damage">
-            <button class="attributes-btn" @click="deleteForm({array: getWeapons, id: weapon.id, previewArray: getPreviewScroll.weapons})">
+            <button 
+                class="attributes-btn" 
+                @click="deleteForm({
+                    array: getWeapons, 
+                    id: weapon.id, 
+                    previewArray: getPreviewScroll.weapons
+                })"
+            >
                 <i class="far fa-trash-alt"></i>
             </button>
         </div>

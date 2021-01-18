@@ -13,48 +13,41 @@
                 <form class="unit-infos">
                     <div class="box text-box">
                         <label for="unit-info-text">Unit Allegiance:</label>
-                        <input v-if="!getEditMode" type="text" v-model="allegiance"> 
-                        <input v-else type="text" v-model="getScrollToEdit.allegiance"> 
+                        <input type="text" v-model="allegiance"> 
                     </div>
 
                     <div class="box text-box">
                         <label for="unit-info-text">Unit Name:</label>
-                        <input v-if="!getEditMode" type="text" v-model="name">
-                        <input v-else type="text" v-model="getScrollToEdit.name">
+                        <input type="text" v-model="name">
                     </div>
 
                     <div class="box text-box">
                         <label for="unit-info-text">Unit Mount:</label>
-                        <input v-if="!getEditMode" type="text" v-model="mount" placeholder="Optional">
-                        <input v-else type="text" v-model="getScrollToEdit.mount" placeholder="Optional">
+                        <input type="text" v-model="mount" placeholder="Optional">
                     </div>
                     
                     <div class="box number-box">
                         <label for="unit-info-text">Unit Move:</label>
-                        <select v-if="!getEditMode" v-model="move">
-                            <option v-for="(number, index) in largeArray" 
-                                :key="index" :value="number">
-                                {{ number }}
-                            </option>
-                        </select>
-                        <select v-else v-model="getScrollToEdit.move">
+                        <select v-model="move.value">
                             <option v-for="(number, index) in largeArray" 
                                 :key="index" :value="number">
                                 {{ number }}
                             </option>
                         </select>
                         <span>"</span>
+                        <div class="radio-input">
+                            <input type="radio" id="moveNormal" name="moveType" value="Normal" v-model="move.type" checked>
+                            <label for="moveNormal">Normal</label>
+                        </div>
+                        <div class="radio-input">
+                            <input type="radio" id="moveFly" name="moveType" value="Fly" v-model="move.type">
+                            <label for="moveFly">Fly</label>
+                        </div>
                     </div>
                     
                     <div class="box number-box">
                         <label for="unit-info-text">Unit Save:</label>
-                        <select v-if="!getEditMode" v-model="save">
-                            <option v-for="(number, index) in diceArray" 
-                                :key="index" :value="number">
-                                {{ number }}
-                            </option>
-                        </select>
-                        <select v-else v-model="getScrollToEdit.save">
+                        <select v-model="save">
                             <option v-for="(number, index) in diceArray" 
                                 :key="index" :value="number">
                                 {{ number }}
@@ -65,13 +58,7 @@
                     
                     <div class="box number-box">
                         <label for="unit-info-text">Unit Wounds:</label>
-                        <select v-if="!getEditMode" v-model="wounds">
-                            <option v-for="(number, index) in largeArray" 
-                                :key="index" :value="number">
-                                {{ number }}
-                            </option>
-                        </select>
-                        <select v-else v-model="getScrollToEdit.wounds">
+                        <select v-model="wounds">
                             <option v-for="(number, index) in largeArray" 
                                 :key="index" :value="number">
                                 {{ number }}
@@ -81,13 +68,7 @@
 
                     <div class="box number-box">
                         <label for="unit-info-text">Unit Bravery:</label>
-                        <select v-if="!getEditMode" v-model="bravery">
-                            <option v-for="(number, index) in largeArray" 
-                                :key="index" :value="number">
-                                {{ number }}
-                            </option>
-                        </select>
-                        <select v-else v-model="getScrollToEdit.bravery">
+                        <select v-model="bravery">
                             <option v-for="(number, index) in largeArray" 
                                 :key="index" :value="number">
                                 {{ number }}
@@ -95,10 +76,11 @@
                         </select>
                     </div>
 
+                    
                     <WeaponForm  />
                     <AbilityForm />
                     <KeywordForm />
-
+                    <RemindersForm :reminders="reminders"/>
                 </form>
             </div>
         </div>
@@ -120,7 +102,7 @@
             <div class="btn-box">
                 <img src="../../assets/button-border.png" alt="Button border">
                 <button v-if="!getEditMode" @click="createMiniscroll" class="btn operation-box__btn">Create warscroll</button>
-                <!-- <button v-else @click="confirmEdit" class="btn operation-box__btn">Confirm edition</button> -->
+                <button v-else @click="createMiniscroll" class="btn operation-box__btn">Confirm edition</button>
                 <div class="btn-bg"></div>
             </div>
         </div> 
@@ -133,6 +115,7 @@ import { Getter, Action, Mutation } from 'vuex-class';
 import WeaponForm from '../adding-modal-components/WeaponForm';
 import AbilityForm from '../adding-modal-components/AbilityForm';
 import KeywordForm from '../adding-modal-components/KeywordForm';
+import RemindersForm from '../adding-modal-components/RemindersForm';
 import WarscrollComponent from '../WarscrollComponent';
 
 @Component({
@@ -140,6 +123,7 @@ import WarscrollComponent from '../WarscrollComponent';
         WeaponForm,
         AbilityForm,
         KeywordForm,
+        RemindersForm,
         WarscrollComponent
     }
 })
@@ -154,6 +138,7 @@ export default class AddingBox extends Vue {
     @Action closeAddingBox;
     @Action addScroll;
     @Action cancelEdit;
+    @Action confirmEdit;
     @Mutation clearWeaponsArray;
     @Mutation clearAbilitiesArray;
     @Mutation clearKeywordsArray;
@@ -161,10 +146,31 @@ export default class AddingBox extends Vue {
     allegiance = null;
     name = null;
     mount = null;
-    move = null;
+    move = {
+        type: null,
+        value: null
+    };
     save = null;
     wounds = null;
     bravery = null;
+    reminders = {
+        move: {
+            first: null,
+            second: null
+        },
+        save: {
+            first: null,
+            second: null
+        },
+        wounds: {
+            first: null,
+            second: null
+        },
+        bravery: {
+            first: null,
+            second: null
+        }
+    };
 
     largeArray = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, "D3", "2xD3", "D6", "2xD6"];
     diceArray = [1,2,3,4,5,6];
@@ -172,8 +178,17 @@ export default class AddingBox extends Vue {
     @Watch('getEditMode')
     onEditModeChange(){
         if(this.getEditMode === true) {
-            console.log('Edit mode changed')
-
+            this.allegiance = this.getScrollToEdit.allegiance;
+            this.name = this.getScrollToEdit.name;
+            this.mount = this.getScrollToEdit.mount;
+            this.move.type = this.getScrollToEdit.move.type;
+            this.move.value = this.getScrollToEdit.move.value;
+            this.save = this.getScrollToEdit.save;
+            this.wounds = this.getScrollToEdit.wounds;
+            this.bravery = this.getScrollToEdit.bravery;
+            this.reminders = {...this.getScrollToEdit.reminders};
+        } else if(this.getEditMode === false) {
+            this.clearAll();
         }
     }
 
@@ -181,29 +196,65 @@ export default class AddingBox extends Vue {
     onNameChange(val) { this.getPreviewScroll.name = val; }
     @Watch('mount')
     onMountChange(val) { this.getPreviewScroll.mount = val; }
-    @Watch('move')
-    onMoveChange(val) { this.getPreviewScroll.move = val; }
+    @Watch('move', {deep: true})
+    onMoveChange() { this.getPreviewScroll.move = {...this.move}; }
     @Watch('save')
     onSaveChange(val) { this.getPreviewScroll.save = val; }
     @Watch('wounds')
     onWoundsChange(val) { this.getPreviewScroll.wounds = val; }
     @Watch('bravery')
     onBraveryChange(val) { this.getPreviewScroll.bravery = val; }
+    @Watch('reminders', {deep: true})
+    onRemindersChange() {
+        this.getPreviewScroll.reminders = {...this.reminders};
+    }
+    
 
 
     createMiniscroll() {
-        let idDate = new Date();
-        let idNumber = idDate.valueOf();
+        let idNumber = null;
+
+        if(this.getEditMode === true) {
+            idNumber = this.getScrollToEdit.id;
+            console.log(`Updated ${idNumber}`);
+        } else {
+            let idDate = new Date();
+            idNumber = idDate.valueOf();
+            console.log(`Added ${idNumber}`);
+        }
+
+        console.log(this.getScrollToEdit.id);
 
         const miniscroll = {
             id: idNumber,
             allegiance: this.allegiance,
             name: this.name,
             mount: this.mount,
-            move: this.move,
+            move: {
+                type: this.move.type,
+                value: this.move.value
+            },
             save: this.save,
             wounds: this.wounds,
             bravery: this.bravery,
+            reminders: {
+                move: {
+                    first: this.reminders.move.first,
+                    second: this.reminders.move.second
+                },
+                save: {
+                    first: this.reminders.save.first,
+                    second: this.reminders.save.second
+                },
+                wounds: {
+                    first: this.reminders.wounds.first,
+                    second: this.reminders.wounds.second
+                },
+                bravery: {
+                    first: this.reminders.bravery.first,
+                    second: this.reminders.bravery.second
+                }
+            },
             weapons: [],
             abilities: [],
             keywords: []
@@ -245,7 +296,12 @@ export default class AddingBox extends Vue {
             miniscroll.keywords.push(keyword);
         })
         
-        this.addScroll(miniscroll);
+        if(this.getEditMode === true) {
+            console.log("Updated");
+        } else {
+            this.addScroll(miniscroll);
+            console.log("Added");
+        }
 
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
@@ -254,10 +310,19 @@ export default class AddingBox extends Vue {
         this.allegiance = null;
         this.name = null;
         this.mount = null;
-        this.move = null;
+        this.move.value = null;
+        this.move.type = null;
         this.save = null;
         this.wounds = null;
         this.bravery = null;
+        this.reminders.move.first = null;
+        this.reminders.move.second = null;
+        this.reminders.save.first = null;
+        this.reminders.save.second = null;
+        this.reminders.wounds.first = null;
+        this.reminders.wounds.second = null;
+        this.reminders.bravery.first = null;
+        this.reminders.bravery.second = null;
 
         this.clearWeaponsArray();
         this.clearAbilitiesArray();
@@ -354,6 +419,7 @@ export default class AddingBox extends Vue {
             transition: opacity .2s
 
             .unit-infos 
+                position: relative
                 flex: 1
                 display: flex
                 flex-direction: column
@@ -378,6 +444,17 @@ export default class AddingBox extends Vue {
                     input:focus, select:focus
                         border-bottom: 2px solid #ff5372
                         outline: none
+
+                    .radio-input
+                        display: flex
+                        align-items: center
+                        margin-left: 10px
+
+                        input 
+
+                        label
+                            font-size: 14px
+                            margin-left: 5px
 
                 .text-box
                     input
