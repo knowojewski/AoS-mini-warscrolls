@@ -1,5 +1,10 @@
 <template>
-  <div @click="openScrollPanel" class="warscroll" :class="{'no-hover': getEditMode || miniscroll.id === 'preview'}" ref="warscrollRef">
+  <div 
+  @click="openScrollPanel" 
+  class="warscroll" 
+  :class="{'no-hover': getEditMode || miniscroll.id === 'preview', 'print': component === 'printSheet'}" 
+  ref="warscrollRef"
+  >
     <div class="warscroll-front">
         <div class="warscroll-top">
           <div class="warscroll-top-name">
@@ -271,8 +276,6 @@ export default class WarscrollComponent extends Vue {
       const front = this.$refs.warscrollRef.firstChild;
       const backElements = Array.from(this.$refs.warscrollRef.children[2].children[1].children);
 
-      console.log(front)
-
       const frontTop = front.children[0].offsetHeight;
       const frontSkills = front.children[1].offsetHeight;
       const frontWeapons = front.children[2].children[0].offsetHeight;
@@ -336,6 +339,7 @@ export default class WarscrollComponent extends Vue {
 .warscroll {
   font-family: sans-serif;
   display: flex;
+  height: 242px;
   background: #fff;
   border: 1px solid #000000;
   box-shadow: none;
@@ -345,6 +349,10 @@ export default class WarscrollComponent extends Vue {
   position: relative;
   overflow: hidden;
   cursor: pointer;
+}
+
+.warscroll.print {
+  margin: 0;
 }
     
 .warscroll-back { border-left: 1px solid #000000; }
@@ -621,6 +629,7 @@ export default class WarscrollComponent extends Vue {
   transform: translateY(-3px);
   border: 1px solid #333;
   box-shadow: 0 0 10px 1px #333;
+  z-index: 1;
 }
 
 .warscroll.no-hover {

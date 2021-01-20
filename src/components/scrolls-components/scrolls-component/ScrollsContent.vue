@@ -135,4 +135,9 @@ export default class ScrollsContent extends Vue {
     }
 }
 
+@media print {
+    .scrolls-box {
+        display: none;
+    }
+}
 </style>

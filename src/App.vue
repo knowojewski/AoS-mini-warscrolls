@@ -37,6 +37,10 @@ $yellow: #E7AC51;
   box-sizing: border-box;
 }
 
+html.edit-mode {
+  overflow: hidden;
+}
+
 body {
   font-family: 'Lora', serif;
   background-color: #e1e1e1;
@@ -97,7 +101,7 @@ body {
 .row {
   max-width: 1900px;
   margin: 0 auto;
-  padding: 0 30px;
+  padding: 0 20px;
 }
 
 @keyframes dark-triangle-anim {
@@ -176,5 +180,7 @@ body {
     opacity: 1;
     transform: translateX(0);
   }
+
 }
+
 </style>

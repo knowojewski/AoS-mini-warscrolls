@@ -116,4 +116,10 @@ export default class NavigationComponent extends Vue {
     top: 0;
   }
 }
+
+@media print {
+  .nav {
+    display: none;
+  }
+}
 </style>

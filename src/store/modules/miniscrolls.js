@@ -111,6 +111,8 @@ const actions = {
         state.previewScroll.weapons = [...miniscroll.weapons];
         state.previewScroll.abilities = [...miniscroll.abilities];
         state.previewScroll.keywords = [...miniscroll.keywords];
+
+        console.log(state.scrollToEdit)
         
         commit('editModeOn');
     },
@@ -119,11 +121,10 @@ const actions = {
         commit('editModeOff');
     },
 
-    confirmEdit({ state }) {
-        console.log('confirm');
-        console.log(state)
-
-        // state.miniscrolls.find( scroll => scroll.id === state.scrollToEdit.id) = {...state.previewScroll};
+    confirmEdit({ state, dispatch, commit }, miniscroll) {
+        const scrollToChange = state.miniscrolls.findIndex( scroll => scroll.id === miniscroll.id);
+        commit('changeScroll', {miniscroll, scrollToChange});
+        dispatch('saveScrollToLocal');
     }
 };
 const mutations = {
@@ -150,7 +151,8 @@ const mutations = {
     addPreviewBackAbility: (state, ability) => {
         if(state.previewScroll.backAbilities) 
             state.previewScroll.backAbilities.push(ability);
-    }
+    },
+    changeScroll: (state, {miniscroll, scrollToChange}) => state.miniscrolls.splice(scrollToChange, 1, miniscroll)
 };
 
 export default {

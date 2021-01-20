@@ -1,10 +1,10 @@
 <template>
   <div class="miniscrolls">
     <div class="row">
+      <div v-if="getEditMode" class="fake-box"></div>
       <div class="container" :class="{'dark-bg': getEditMode}">
         <AddingBox />
         <PrintSheet v-if="!getEditMode" />
-        <!-- <WarscrollComponent v-else :miniscroll="getScrollToEdit" /> -->
       </div>
     </div>
     <div class="row">
@@ -42,6 +42,12 @@ export default class Miniscrolls extends Vue {
   margin-top: 40px;
   width: 100%;
   display: flex;
+  justify-content: space-between;
+}
+
+.fake-box {
+  margin-bottom: 100px;
+  height: 900px;
 }
 
 .dark-bg {
@@ -57,10 +63,7 @@ export default class Miniscrolls extends Vue {
   display: flex;
   justify-content: center;
   align-items: center;
-
-  .adding-box {
-    margin-right: 40px;
-  }
+  overflow-y: scroll;
 }
 
 </style>

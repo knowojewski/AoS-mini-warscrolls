@@ -1,5 +1,5 @@
 <template>
-    <div class="adding-box">
+    <div class="adding-box" :class="{'edit-mode': getEditMode}">
         <img class="bottom-line" src="../../assets/miniscrolls/bottom-line.png" alt="bottom line">
         <img class="side-line left-line" src="../../assets/miniscrolls/side-line.png" alt="Left line">
         <img class="side-line right-line" src="../../assets/miniscrolls/side-line.png" alt="Right line">
@@ -76,7 +76,6 @@
                         </select>
                     </div>
 
-                    
                     <WeaponForm  />
                     <AbilityForm />
                     <KeywordForm />
@@ -187,8 +186,11 @@ export default class AddingBox extends Vue {
             this.wounds = this.getScrollToEdit.wounds;
             this.bravery = this.getScrollToEdit.bravery;
             this.reminders = {...this.getScrollToEdit.reminders};
+
+            document.firstElementChild.classList.add('edit-mode');
         } else if(this.getEditMode === false) {
             this.clearAll();
+            document.firstElementChild.classList.remove('edit-mode');
         }
     }
 
@@ -208,8 +210,6 @@ export default class AddingBox extends Vue {
     onRemindersChange() {
         this.getPreviewScroll.reminders = {...this.reminders};
     }
-    
-
 
     createMiniscroll() {
         let idNumber = null;
@@ -297,10 +297,10 @@ export default class AddingBox extends Vue {
         })
         
         if(this.getEditMode === true) {
-            console.log("Updated");
+            this.confirmEdit(miniscroll);
+            this.cancelEdit();
         } else {
             this.addScroll(miniscroll);
-            console.log("Added");
         }
 
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
@@ -575,6 +575,9 @@ export default class AddingBox extends Vue {
                             input:nth-child(3)
                                 width: 60%
 
+.edit-mode 
+    margin: 100px 0
+
 .btns
     position: absolute
     bottom: -40px
@@ -582,4 +585,8 @@ export default class AddingBox extends Vue {
     width: 100%
     display: flex
     justify-content: center
+
+@media print 
+    .adding-box 
+        display: none
 </style>
