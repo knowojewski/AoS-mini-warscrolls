@@ -11,7 +11,6 @@
           <div class="content-right">
               <div class="inputs">
                   <input type="text" class="input" placeholder="First" v-model="reminders.move.first">
-                  <input type="text" class="input" placeholder="Second" v-model="reminders.move.second">
               </div>
               <div class="inputs">
                   <input type="text" class="input" placeholder="First" v-model="reminders.save.first">

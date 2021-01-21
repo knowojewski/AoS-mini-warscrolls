@@ -18,6 +18,13 @@
         </router-link>
         <img class="link-icon" src="../assets/navigation/nav-icon.png" alt="Nav icon">
       </li>
+      <li class="link-box">
+        <router-link class="link" to="/manual" exact>
+          Creator Manual
+          <img class="link-bg" src="../assets/navigation/link-bg.png" alt="Link background">
+        </router-link>
+        <img class="link-icon" src="../assets/navigation/nav-icon.png" alt="Nav icon">
+      </li>
     </ul>
     <img class="nav-image" src="../assets/navigation/nav-image.png" alt="Header image">
     <img class="nav-line" src="../assets/navigation/nav-line.png" alt="Header line">

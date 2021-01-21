@@ -17,16 +17,16 @@
         </div>
         <div class="warscroll-stats">
           <div class="stats-box">
-              <span v-if="miniscroll.move.type === 'Fly'" class="move-type">{{ miniscroll.move.type }}</span>
-              <i class="fas fa-external-link-alt"></i>
+              <!-- <span v-if="miniscroll.move.type === 'Fly'" class="move-type">{{ miniscroll.move.type }}</span> -->
+              <img class="skills-icon move" src="../assets/scroll-icons/move-icon.png" alt="Move Icon">
               <span>{{ miniscroll.move.value }}"</span>
               <div class="reminders">
                 <span class="reminder reminder-first">{{ miniscroll.reminders.move.first }}</span>
-                <span class="reminder reminder-second">{{ miniscroll.reminders.move.second }}</span>
+                <span v-if="miniscroll.move.type === 'Fly'" class="reminder move-type">{{ miniscroll.move.type }}</span>
               </div>
           </div>
           <div class="stats-box">
-              <i class="fas fa-shield-alt"></i>
+              <img class="skills-icon save" src="../assets/scroll-icons/save-icon.png" alt="Save Icon">
               <span>{{ miniscroll.save }}+</span>
               <div class="reminders">
                 <span class="reminder reminder-first">{{ miniscroll.reminders.save.first }}</span>
@@ -34,7 +34,7 @@
               </div>
           </div>
           <div class="stats-box">
-              <i class="fas fa-skull"></i>
+              <img class="skills-icon wounds" src="../assets/scroll-icons/wounds-icon.png" alt="Wounds Icon">
               <span>{{ miniscroll.wounds }}</span>
               <div class="reminders">
                 <span class="reminder reminder-first">{{ miniscroll.reminders.wounds.first }}</span>
@@ -42,7 +42,7 @@
               </div>
           </div>
           <div class="stats-box">
-              <i class="fas fa-star"></i>
+              <img class="skills-icon bravery" src="../assets/scroll-icons/bravery-icon.png" alt="Bravery Icon">
               <span>{{ miniscroll.bravery }}</span>
               <div class="reminders">
                 <span class="reminder reminder-first">{{ miniscroll.reminders.bravery.first }}</span>
@@ -66,18 +66,18 @@
               <p>
                 <i v-if="weapon.type === 'Melee'" class="fas fa-gavel"></i>
                 <i v-if="weapon.type === 'Ranged'" class="fas fa-expand-arrows-alt"></i>
-                {{ weapon.range }}
+                <!-- {{ weapon.range }}
                 <span class="reminders">
                   <span class="reminder reminder-top">+1L</span>
                   <span class="reminder reminder-bottom">+1L</span>
-                </span>
+                </span> -->
               </p>
               <p>
                 {{ weapon.attack }}
-                <span class="reminders">
+                <!-- <span class="reminders">
                   <span class="reminder reminder-top">+1L</span>
                   <span class="reminder reminder-bottom">+1L</span>
-                </span>
+                </span> -->
               </p>
               <p>{{ weapon.hit }}+</p>
               <p>{{ weapon.wound }}+</p>
@@ -457,20 +457,25 @@ export default class WarscrollComponent extends Vue {
       align-items: center;
 
         
-      i {
-        font-size: 23px;
+      .skills-icon {
+        width: 20px;
         margin-right: 4px;
+      }
+
+      .skills-icon.save {
+        width: 23px;
+      }
+
+      .skills-icon.wounds {
+        width: 23px;
+      }
+
+      .skills-icon.bravery {
+        width: 28px;
       }
 
       span { font-size: 20px; }
 
-      .move-type {
-        font-size: 10px;
-        font-weight: 600;
-        text-transform: uppercase;
-        // transform: rotateZ(-90deg);
-        margin-right: 1px;
-      }
 
       .reminders {
         position: relative;
@@ -486,6 +491,13 @@ export default class WarscrollComponent extends Vue {
       .reminder-first { bottom: 2px; }
 
       .reminder-second { top: 2px; }
+
+      .move-type {
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        top: 2px;
+      }
     }
 
   }

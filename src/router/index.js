@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Miniscrolls from "../views/Miniscrolls.vue";
 import Minicheats from "../views/Minicheats.vue";
+import Manual from "../views/Manual.vue";
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,11 @@ const routes = [
     path: "/minicheats",
     name: "Minicheats",
     component: Minicheats
+  },
+  {
+    path: "/manual",
+    name: "Manual",
+    component: Manual
   }
 ];
 
