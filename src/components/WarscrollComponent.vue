@@ -64,13 +64,15 @@
             <div class="weapon" v-for="weapon in miniscroll.weapons" :key="weapon.id" :class="{'ranged': weapon.type === 'Ranged'}">
               <p> {{ createShortcut(weapon.name) }}</p>
               <p>
-                <i v-if="weapon.type === 'Melee'" class="fas fa-gavel"></i>
-                <i v-if="weapon.type === 'Ranged'" class="fas fa-expand-arrows-alt"></i>
-                <!-- {{ weapon.range }}
-                <span class="reminders">
-                  <span class="reminder reminder-top">+1L</span>
-                  <span class="reminder reminder-bottom">+1L</span>
-                </span> -->
+                <img v-if="weapon.type === 'Melee'" class="weapon-icon melee" src="../assets/scroll-icons/melee-icon.png" alt="Melee Icon"/>
+                <img v-if="weapon.type === 'Ranged'" class="weapon-icon ranged" src="../assets/scroll-icons/ranged-icon.png" alt="Ranged Icon"/>
+                <span class="weapon-range">
+                  {{ weapon.range }}"
+                  <!-- <span class="reminders">
+                    <span class="reminder reminder-top">+1L</span>
+                    <span class="reminder reminder-bottom">+1L</span>
+                  </span> -->
+                </span>
               </p>
               <p>
                 {{ weapon.attack }}
@@ -573,8 +575,20 @@ export default class WarscrollComponent extends Vue {
           font-size: 14px;
           font-weight: bold;
           border-top: none;
+          display: flex;
+          align-items: center;
 
-          i { margin-right: 2px; } 
+          .weapon-range {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+          }
+
+          .weapon-icon { 
+            width: 14px;
+            margin-left: 4px; 
+          } 
         }
 
         p:nth-child(1) {
