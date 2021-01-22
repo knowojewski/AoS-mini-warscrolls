@@ -13,42 +13,52 @@
                 <form class="unit-infos">
                     <div class="box text-box">
                         <label for="unit-info-text">Unit Allegiance:</label>
-                        <input type="text" v-model="allegiance"> 
+                        <input class="info-input" type="text" v-model="allegiance"> 
                     </div>
 
                     <div class="box text-box">
                         <label for="unit-info-text">Unit Name:</label>
-                        <input type="text" v-model="name">
+                        <input class="info-input" type="text" v-model="name">
                     </div>
 
-                    <div class="box text-box">
+                    <div class="box text-box text-mount">
                         <label for="unit-info-text">Unit Mount:</label>
-                        <input type="text" v-model="mount" placeholder="Optional">
+                        <input class="info-input" type="text" v-model="mount" placeholder="Optional">
                     </div>
                     
                     <div class="box number-box">
                         <label for="unit-info-text">Unit Move:</label>
-                        <select v-model="move.value">
-                            <option v-for="(number, index) in largeArray" 
+                        <select class="info-input" v-model="move.value">
+                            <option v-for="(number, index) in getLargeArray" 
                                 :key="index" :value="number">
                                 {{ number }}
                             </option>
                         </select>
                         <span>"</span>
-                        <div class="radio-input">
+                        <div class="input-check">
+                            <label for="moveType">Fly</label>
+                            <input 
+                            type="checkbox" 
+                            id="moveType" 
+                            v-model="move.type"
+                            true-value="Fly"
+                            false-value="Normal"
+                            >
+                        </div>
+                        <!-- <div class="radio-input">
                             <input type="radio" id="moveNormal" name="moveType" value="Normal" v-model="move.type" checked>
                             <label for="moveNormal">Normal</label>
                         </div>
                         <div class="radio-input">
                             <input type="radio" id="moveFly" name="moveType" value="Fly" v-model="move.type">
                             <label for="moveFly">Fly</label>
-                        </div>
+                        </div> -->
                     </div>
                     
                     <div class="box number-box">
                         <label for="unit-info-text">Unit Save:</label>
-                        <select v-model="save">
-                            <option v-for="(number, index) in diceArray" 
+                        <select class="info-input" v-model="save">
+                            <option v-for="(number, index) in getDiceArray" 
                                 :key="index" :value="number">
                                 {{ number }}
                             </option>
@@ -58,8 +68,8 @@
                     
                     <div class="box number-box">
                         <label for="unit-info-text">Unit Wounds:</label>
-                        <select v-model="wounds">
-                            <option v-for="(number, index) in largeArray" 
+                        <select class="info-input" v-model="wounds">
+                            <option v-for="(number, index) in getLargeArray" 
                                 :key="index" :value="number">
                                 {{ number }}
                             </option>
@@ -68,8 +78,8 @@
 
                     <div class="box number-box">
                         <label for="unit-info-text">Unit Bravery:</label>
-                        <select v-model="bravery">
-                            <option v-for="(number, index) in largeArray" 
+                        <select class="info-input" v-model="bravery">
+                            <option v-for="(number, index) in getLargeArray" 
                                 :key="index" :value="number">
                                 {{ number }}
                             </option>
@@ -134,6 +144,8 @@ export default class AddingBox extends Vue {
     @Getter getKeywords;
     @Getter getEditMode;
     @Getter getScrollToEdit;
+    @Getter getLargeArray;
+    @Getter getDiceArray;
     @Action closeAddingBox;
     @Action addScroll;
     @Action cancelEdit;
@@ -170,9 +182,6 @@ export default class AddingBox extends Vue {
             second: null
         }
     };
-
-    largeArray = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, "D3", "2xD3", "D6", "2xD6"];
-    diceArray = [1,2,3,4,5,6];
 
     @Watch('getEditMode')
     onEditModeChange(){
@@ -418,6 +427,7 @@ export default class AddingBox extends Vue {
             padding: 0 30px 0 30px
             transition: opacity .2s
 
+
             .unit-infos 
                 position: relative
                 flex: 1
@@ -425,7 +435,9 @@ export default class AddingBox extends Vue {
                 flex-direction: column
                 width: 100%
 
+                    
                 .box
+                    position: relative
                     display: flex
                     align-items: center
                     margin: 8px 0
@@ -434,27 +446,29 @@ export default class AddingBox extends Vue {
                     label 
                         width: 30%
 
-                    input, select
+                    .info-input
                         border: none
                         font-size: 15px
                         height: 30px
                         padding: 4px
                         border-bottom: 1px solid #272b2a
 
-                    input:focus, select:focus
+                    .info-input:focus
                         border-bottom: 2px solid #ff5372
                         outline: none
 
-                    .radio-input
+                    .input-check
                         display: flex
                         align-items: center
-                        margin-left: 10px
-
-                        input 
+                        justify-content: space-between
+                        margin-left: 5px
 
                         label
                             font-size: 14px
-                            margin-left: 5px
+                            margin-right: 5px
+                
+                .text-mount
+                    margin-bottom: 30px
 
                 .text-box
                     input
@@ -531,39 +545,6 @@ export default class AddingBox extends Vue {
 
                             .attributes-btn:hover
                                 background: #ff5372
-
-                            input, select 
-                                width: 10%
-                                border: none
-                                background: #ececec
-                                border-right: 2px solid #ffffff
-
-                            input::placeholder
-                                font-style: italic
-
-                            input:nth-child(1)
-                                width: 22%
-
-                            input:nth-child(2)
-                                width: 15%
-
-                            input:nth-child(3)
-                                width: 10%
-
-                            input:nth-child(4)
-                                width: 10%
-
-                            input:nth-child(5)
-                                width: 9%
-
-                            input:nth-child(6)
-                                width: 14%
-
-                            input:nth-child(7)
-                                width: 8%
-
-                            input:nth-child(8)
-                                width: 12%
 
                         .ability-add
                             select

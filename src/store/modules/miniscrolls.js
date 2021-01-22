@@ -42,7 +42,9 @@ const state = {
 
     editMode: false,
     scrollToEdit: {},
-    keywordsToEdit: []
+    keywordsToEdit: [],
+    largeArray: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32, "D3", "2D3", "D6", "2D6"],
+    diceArray: [2,3,4,5,6]
 };
 
 const getters = {
@@ -54,11 +56,14 @@ const getters = {
     getScrollsToPrint: state => state.scrollsToPrint,
     getEditMode: state => state.editMode,
     getScrollToEdit: state => state.scrollToEdit,
-    getKeywordsToEdit: state => state.keywordsToEdit
+    getKeywordsToEdit: state => state.keywordsToEdit,
+    getLargeArray: state => state.largeArray,
+    getDiceArray: state => state.diceArray
 };
 
 const actions = {
     addScroll({ commit, dispatch }, miniscroll) {
+        console.log(miniscroll)
         commit('addScroll', miniscroll);
         dispatch('saveScrollToLocal');
     },
@@ -90,7 +95,7 @@ const actions = {
     },
 
     changePosition({ dispatch }, {array, id, value}) {
-        const index = array.findIndex( item => item.id === id);
+        const index = array.findIndex( item => item.printId ? item.printId === id : item.id === id);
         const newIndex = index+value;
         
         if(newIndex !== -1) {
@@ -125,6 +130,23 @@ const actions = {
         const scrollToChange = state.miniscrolls.findIndex( scroll => scroll.id === miniscroll.id);
         commit('changeScroll', {miniscroll, scrollToChange});
         dispatch('saveScrollToLocal');
+    },
+
+    addScrollToPrint({ commit }, miniscroll) {
+        const printingScroll = {...miniscroll};
+
+        let idDate = new Date();
+        let idNumber = idDate.valueOf();
+        printingScroll.printId = idNumber;
+
+        commit('addToPrint', printingScroll);
+        console.log(printingScroll);
+        console.log(commit);
+    },
+
+    deleteFromPrint({ state }, id) {
+        const index = state.scrollsToPrint.findIndex( item => item.printId === id);
+        state.scrollsToPrint.splice(index, 1);
     }
 };
 const mutations = {
@@ -141,7 +163,7 @@ const mutations = {
         state.previewScroll.keywords = [];
     },
     addScroll: (state, miniscroll) => state.miniscrolls.push(miniscroll), 
-    addScrollToPrint: (state, miniscroll) => state.scrollsToPrint.push(miniscroll), 
+    addToPrint: (state, miniscroll) => state.scrollsToPrint.push(miniscroll), 
     editModeOn: state => state.editMode = true,
     editModeOff: state => state.editMode = false,
     addWeapon: (state, weapon) => state.weapons.push(weapon),
@@ -152,7 +174,10 @@ const mutations = {
         if(state.previewScroll.backAbilities) 
             state.previewScroll.backAbilities.push(ability);
     },
-    changeScroll: (state, {miniscroll, scrollToChange}) => state.miniscrolls.splice(scrollToChange, 1, miniscroll)
+    changeScroll: (state, {miniscroll, scrollToChange}) => {
+        state.miniscrolls.splice(scrollToChange, 1, miniscroll)
+        console.log(miniscroll)
+    }
 };
 
 export default {

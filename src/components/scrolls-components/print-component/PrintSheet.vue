@@ -8,8 +8,8 @@
       <div class="print-box">
         <div class="print-view">
           <WarscrollComponent 
-            v-for="(miniscroll, index) in getScrollsToPrint" 
-            :key="index" 
+            v-for="miniscroll in getScrollsToPrint" 
+            :key="miniscroll.printId" 
             :miniscroll="miniscroll"
             component="printSheet"
           />
@@ -122,11 +122,17 @@ export default class PrintSheet extends Vue {
         align-self: start;
         width: 100%;
         background-color: #fff;
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
         padding: 10px;
       }
+      
     }
   }
 
@@ -193,6 +199,8 @@ export default class PrintSheet extends Vue {
         padding: 0;
 
         .print-view {
+          display: -webkit-box;
+          display: -ms-flexbox;
           display: flex;
           background-color: white;
           width: 100%;

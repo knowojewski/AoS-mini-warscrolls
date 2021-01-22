@@ -17,7 +17,6 @@
         </div>
         <div class="warscroll-stats">
           <div class="stats-box">
-              <!-- <span v-if="miniscroll.move.type === 'Fly'" class="move-type">{{ miniscroll.move.type }}</span> -->
               <img class="skills-icon move" src="../assets/scroll-icons/move-icon.png" alt="Move Icon">
               <span>{{ miniscroll.move.value }}"</span>
               <div class="reminders">
@@ -148,14 +147,14 @@
       <div v-else class="btns">
           <div class="btn-box">
               <img src="../assets/button-border.png" alt="Button border">
-              <button class="btn">Delete from Print</button>
+              <button @click="deleteFromPrint(miniscroll.printId)" class="btn">Remove from Print</button>
               <div class="btn-bg"></div>
           </div>
           <div class="arrow-btn-box">
-            <button class="btn-arrow btn-left" title="Move left">
+            <button @click="changePosition({ array: getScrollsToPrint, id: miniscroll.printId, value: -1 })" class="btn-arrow btn-left" title="Move left">
               <img src="../assets/arrow-up.png" alt="Arrow left">
             </button> 
-            <button class="btn-arrow btn-right" title="Move right">
+            <button  @click="changePosition({ array: getScrollsToPrint, id: miniscroll.printId, value: 1 })" class="btn-arrow btn-right" title="Move right">
               <img src="../assets/arrow-up.png" alt="Arrow left">
             </button> 
           </div>
@@ -193,7 +192,7 @@
 
 <script>
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import { Action, Getter, Mutation } from 'vuex-class';
+import { Action, Getter } from 'vuex-class';
 
 @Component
 export default class WarscrollComponent extends Vue {
@@ -208,7 +207,8 @@ export default class WarscrollComponent extends Vue {
     @Action deleteScroll;
     @Action changePosition;
     @Action editScroll;
-    @Mutation addScrollToPrint;
+    @Action deleteFromPrint;
+    @Action addScrollToPrint;
 
     currentScroll = document.createElement('div');
     backCard = false;
@@ -221,6 +221,13 @@ export default class WarscrollComponent extends Vue {
         }, 10);
         this.$forceUpdate();
       }
+    }
+
+    @Watch('getEditMode')
+    onEditModeChange() {
+      setTimeout(() => {
+        this.splitWarscroll();
+      }, 10);
     }
 
     weaponsTopString(weapons) {
@@ -460,21 +467,21 @@ export default class WarscrollComponent extends Vue {
 
         
       .skills-icon {
-        width: 20px;
+        height: 25px;
         margin-right: 4px;
       }
 
-      .skills-icon.save {
-        width: 23px;
-      }
+      // .skills-icon.save {
+      //   width: 23px;
+      // }
 
-      .skills-icon.wounds {
-        width: 23px;
-      }
+      // .skills-icon.wounds {
+      //   width: 23px;
+      // }
 
-      .skills-icon.bravery {
-        width: 28px;
-      }
+      // .skills-icon.bravery {
+      //   width: 28px;
+      // }
 
       span { font-size: 20px; }
 

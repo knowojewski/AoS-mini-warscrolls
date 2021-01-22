@@ -2,29 +2,21 @@
   <div class="reminders-form">
       <h4 class="title">REMINDERS</h4>
       <div class="content">
-          <div class="content-left">
-              <p class="reminder-name">Move</p>
-              <p class="reminder-name">Save</p>
-              <p class="reminder-name">Wounds</p>
-              <p class="reminder-name">Bravery</p>
-          </div>
-          <div class="content-right">
-              <div class="inputs">
-                  <input type="text" class="input" placeholder="First" v-model="reminders.move.first">
-              </div>
-              <div class="inputs">
-                  <input type="text" class="input" placeholder="First" v-model="reminders.save.first">
-                  <input type="text" class="input" placeholder="Second" v-model="reminders.save.second">
-              </div>
-              <div class="inputs">
-                  <input type="text" class="input" placeholder="First" v-model="reminders.wounds.first">
-                  <input type="text" class="input" placeholder="Second" v-model="reminders.wounds.second">
-              </div>
-              <div class="inputs">
-                  <input type="text" class="input" placeholder="First" v-model="reminders.bravery.first">
-                  <input type="text" class="input" placeholder="Second" v-model="reminders.bravery.second">
-              </div>
-          </div>
+            <div class="inputs">
+                <input type="text" class="input" placeholder="First" v-model="reminders.move.first">
+            </div>
+            <div class="inputs">
+                <input type="text" class="input" placeholder="First" v-model="reminders.save.first">
+                <input type="text" class="input" placeholder="Second" v-model="reminders.save.second">
+            </div>
+            <div class="inputs">
+                <input type="text" class="input" placeholder="First" v-model="reminders.wounds.first">
+                <input type="text" class="input" placeholder="Second" v-model="reminders.wounds.second">
+            </div>
+            <div class="inputs">
+                <input type="text" class="input" placeholder="First" v-model="reminders.bravery.first">
+                <input type="text" class="input" placeholder="Second" v-model="reminders.bravery.second">
+            </div>
       </div>
   </div>
 </template>
@@ -47,11 +39,11 @@ export default class RemindersForm extends Vue {
     position: absolute;
     display: flex;
     flex-direction: column;
-    right: 0;
-    top: 180px;
-    width: 220px;
-    height: 150px;
-    box-shadow: 0px 0px 10px #DFDFDF;
+    right: 25%;
+    top: 140px;
+    width: 155px;
+    height: 210px;
+    border-left: 1px solid #c3c3c3;
     padding: 0px 15px 5px 15px;
 
     .title {
@@ -64,40 +56,24 @@ export default class RemindersForm extends Vue {
         flex: 1;
         width: 100%;
         display: flex;
+        flex-direction: column;
+        justify-content: space-around;
 
-        .content-left {
-            width: 33.3%;
+        .inputs {
             display: flex;
-            flex-direction: column;
             justify-content: space-around;
 
-            .reminder-name {
+            input {
+                width: 60px;
+                height: 28px;
+                padding: 0 3px;
                 font-size: 15px;
+                border: none;
+                background: #ececec;
             }
-        }
 
-        .content-right {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            width: 66.6%;
-
-            .inputs {
-                display: flex;
-                justify-content: space-around;
-
-                input {
-                    width: 60px;
-                    height: 28px;
-                    padding: 0 3px;
-                    font-size: 15px;
-                    border: none;
-                    background: #ececec;
-                }
-
-                input::placeholder {
-                    font-style: italic;
-                }
+            input::placeholder {
+                font-style: italic;
             }
         }
     }

@@ -14,7 +14,12 @@
                 <option value="Melee">Melee</option>
                 <option value="Ranged">Ranged</option>
             </select>
-            <input type="text" v-model="weapon.range" placeholder="Range">
+
+            <input type="text" v-model="weapon.range" list="range" placeholder="Range">
+            <datalist id="range">
+                <option v-for="(item, index) in getLargeArray" :key="index">{{ item }}</option>
+            </datalist>
+
             <input type="text" v-model="weapon.attack" placeholder="Attack">
             <input type="text" v-model="weapon.hit" placeholder="To Hit">
             <input type="text" v-model="weapon.wound" placeholder="To Wound">
@@ -43,6 +48,8 @@ import { Action, Getter, Mutation } from 'vuex-class';
 export default class WeaponForm extends Vue {
     @Getter getWeapons;
     @Getter getPreviewScroll;
+    @Getter getDiceArray;
+    @Getter getLargeArray;
     @Action deleteForm;
     @Mutation addWeapon;
 
@@ -69,5 +76,39 @@ export default class WeaponForm extends Vue {
 </script>
 
 <style lang="scss">
+.attribute {
+    input, select {
+        width: 10%;
+        border: none;
+        background: #ececec;
+        border-right: 2px solid #ffffff;
+    }
 
+    input::placeholder { font-style: italic; }
+}
+
+    
+// input:nth-child(1)
+//     width: 22%
+
+// input:nth-child(2)
+//     width: 15%
+
+// input:nth-child(4)
+//     width: 10%
+
+// input:nth-child(5)
+//     width: 10%
+
+// input:nth-child(6)
+//     width: 9%
+
+// input:nth-child(7)
+//     width: 14%
+
+// input:nth-child(8)
+//     width: 8%
+
+// input:nth-child(9)
+//     width: 12%
 </style>
