@@ -279,7 +279,8 @@ export default class AddingBox extends Vue {
                 hit: item.hit,
                 wound: item.wound,
                 rend: item.rend,
-                damage: item.damage    
+                damage: item.damage,
+                reminders: {...item.reminders}    
             }
 
             miniscroll.weapons.push(weapon);
@@ -312,6 +313,7 @@ export default class AddingBox extends Vue {
             this.addScroll(miniscroll);
         }
 
+        console.log(miniscroll)
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
 
@@ -529,14 +531,17 @@ export default class AddingBox extends Vue {
                         margin-top: 10px
 
                         .weapon-add, .ability-add, .keyword-add
-                            width: 100%
                             display: flex
                             margin-bottom: 5px
 
+                            input, select 
+                                border: none
+                                background: #ececec
+                                border-right: 2px solid #ffffff
+                                padding: 0 3px
+
                             .attributes-btn
                                 border: none
-                                width: 30px
-                                height: 30px
                                 background: #000
                                 font-size: 20px
                                 color: #ffffff
@@ -546,7 +551,17 @@ export default class AddingBox extends Vue {
                             .attributes-btn:hover
                                 background: #ff5372
 
+                        .ability-add, .keyword-add
+                            input, select 
+                                font-size: 15px
+
+                            .attributes-btn
+                                width: 30px
+                                height: 30px
+
                         .ability-add
+                            width: 100%
+
                             select
                                 width: 20%
 
@@ -555,6 +570,9 @@ export default class AddingBox extends Vue {
                 
                             input:nth-child(3)
                                 width: 60%
+
+                        .keyword-add
+                            width: 100%
 
 .edit-mode 
     margin: 100px 0

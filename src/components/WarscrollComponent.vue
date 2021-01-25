@@ -26,7 +26,7 @@
           </div>
           <div class="stats-box">
               <img class="skills-icon save" src="../assets/scroll-icons/save-icon.png" alt="Save Icon">
-              <span>{{ miniscroll.save }}+</span>
+              <span>{{ miniscroll.save }}</span>
               <div class="reminders">
                 <span class="reminder reminder-first">{{ miniscroll.reminders.save.first }}</span>
                 <span class="reminder reminder-second">{{ miniscroll.reminders.save.second }}</span>
@@ -67,10 +67,10 @@
                 <img v-if="weapon.type === 'Ranged'" class="weapon-icon ranged" src="../assets/scroll-icons/ranged-icon.png" alt="Ranged Icon"/>
                 <span class="weapon-range">
                   {{ weapon.range }}"
-                  <!-- <span class="reminders">
-                    <span class="reminder reminder-top">+1L</span>
-                    <span class="reminder reminder-bottom">+1L</span>
-                  </span> -->
+                  <span class="reminders">
+                    <span class="reminder reminder-top">{{ weapon.reminders.rangeFirst }}</span>
+                    <span class="reminder reminder-bottom">{{ weapon.reminders.rangeSecond }}</span>
+                  </span>
                 </span>
               </p>
               <p>
@@ -80,9 +80,9 @@
                   <span class="reminder reminder-bottom">+1L</span>
                 </span> -->
               </p>
-              <p>{{ weapon.hit }}+</p>
-              <p>{{ weapon.wound }}+</p>
-              <p>-{{ weapon.rend }}</p>
+              <p>{{ weapon.hit }}</p>
+              <p>{{ weapon.wound }}</p>
+              <p>{{ weapon.rend }}</p>
               <p>{{ weapon.damage }}</p>
             </div>
           </div>

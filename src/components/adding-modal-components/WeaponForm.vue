@@ -9,25 +9,54 @@
     </div>
     <div class="lower-side">
         <div v-for="weapon in getWeapons" :key="weapon.id" class="weapon-add attribute">
-            <input type="text" v-model="weapon.name" placeholder="Name">
-            <select id="abilityType" v-model="weapon.type">
-                <option value="Melee">Melee</option>
-                <option value="Ranged">Ranged</option>
-            </select>
-
-            <input type="text" v-model="weapon.range" list="range" placeholder="Range">
-            <datalist id="range">
-                <option v-for="(item, index) in getLargeArray" :key="index">{{ item }}</option>
-            </datalist>
-
-            <input type="text" v-model="weapon.attack" placeholder="Attack">
-            <input type="text" v-model="weapon.hit" placeholder="To Hit">
-            <input type="text" v-model="weapon.wound" placeholder="To Wound">
-            <input type="text" v-model="weapon.rend" placeholder="Rend">
-            <input type="text" v-model="weapon.damage" placeholder="Damage">
+            <form class="weapon-form">
+                <input type="text" class="text-input name-input" placeholder="Weapon Name" v-model="weapon.name">
+                <div class="weapon-infos">
+                    <div class="weapon-skills">
+                        <select class="text-input" v-model="weapon.type">
+                            <option class="select-placeholder" value="" disabled selected hidden>Type</option>
+                            <option value="Melee">Melee</option>
+                            <option value="Ranged">Ranged</option>
+                        </select>
+                        <DatalistInput v-model="weapon.range" :arrayProp="getRangeArray" placeholder="Range"/>
+                        <DatalistInput v-model="weapon.attack" :arrayProp="getMediumArray" placeholder="Attack"/>
+                        <DatalistInput v-model="weapon.hit" :arrayProp="getDiceArray" placeholder="Hit"/>
+                        <DatalistInput v-model="weapon.wound" :arrayProp="getDiceArray" placeholder="Wound"/>
+                        <DatalistInput v-model="weapon.rend" :arrayProp="getRendArray" placeholder="Rend"/>
+                        <DatalistInput v-model="weapon.damage" :arrayProp="getSmallArray" placeholder="Damage"/>
+                    </div>
+                    <div class="weapon-reminders">
+                        <p class="reminders-text">REMINDERS</p>
+                        <div class="reminders-box">
+                            <DatalistInput v-model="weapon.reminders.rangeFirst" :arrayProp="getRemindersArray" placeholder="First"/>
+                            <DatalistInput v-model="weapon.reminders.rangeSecond" :arrayProp="getRemindersArray" placeholder="Second"/>
+                        </div>
+                        <div class="reminders-box">
+                            <DatalistInput v-model="weapon.reminders.attackFirst" :arrayProp="getRemindersArray" placeholder="First"/>
+                            <DatalistInput v-model="weapon.reminders.attackSecond" :arrayProp="getRemindersArray" placeholder="Second"/>
+                        </div>
+                        <div class="reminders-box">
+                            <DatalistInput v-model="weapon.reminders.hitFirst" :arrayProp="getRemindersArray" placeholder="First"/>
+                            <DatalistInput v-model="weapon.reminders.hitSecond" :arrayProp="getRemindersArray" placeholder="Second"/>
+                        </div>
+                        <div class="reminders-box">
+                            <DatalistInput v-model="weapon.reminders.woundFirst" :arrayProp="getRemindersArray" placeholder="First"/>
+                            <DatalistInput v-model="weapon.reminders.woundSecond" :arrayProp="getRemindersArray" placeholder="Second"/>
+                        </div>
+                        <div class="reminders-box">
+                            <DatalistInput v-model="weapon.reminders.rendFirst" :arrayProp="getRemindersArray" placeholder="First"/>
+                            <DatalistInput v-model="weapon.reminders.rendSecond" :arrayProp="getRemindersArray" placeholder="Second"/>
+                        </div>
+                        <div class="reminders-box">
+                            <DatalistInput v-model="weapon.reminders.damageFirst" :arrayProp="getRemindersArray" placeholder="First"/>
+                            <DatalistInput v-model="weapon.reminders.damageSecond" :arrayProp="getRemindersArray" placeholder="Second"/>
+                        </div>
+                    </div>
+                </div>
+            </form>
             <button 
                 class="attributes-btn" 
-                @click="deleteForm({
+                @click.prevent="deleteForm({
                     array: getWeapons, 
                     id: weapon.id, 
                     previewArray: getPreviewScroll.weapons
@@ -43,13 +72,23 @@
 <script>
 import { Vue, Component } from 'vue-property-decorator';
 import { Action, Getter, Mutation } from 'vuex-class';
+import DatalistInput from './DatalistInput';
 
-@Component
+@Component({
+    components: {
+        DatalistInput
+    }
+})
 export default class WeaponForm extends Vue {
     @Getter getWeapons;
     @Getter getPreviewScroll;
     @Getter getDiceArray;
     @Getter getLargeArray;
+    @Getter getMediumArray;
+    @Getter getSmallArray;
+    @Getter getRendArray;
+    @Getter getRangeArray;
+    @Getter getRemindersArray;
     @Action deleteForm;
     @Mutation addWeapon;
 
@@ -60,13 +99,27 @@ export default class WeaponForm extends Vue {
         const weapon = {
             id: idNumber,
             name: null,
-            type: "Melee",
+            type: "",
             range: null,
             attack: null,
             hit: null,
             wound: null,
             rend: null,
-            damage: null    
+            damage: null,
+            reminders: {
+                rangeFirst: null,
+                rangeSecond: null,
+                attackFirst: null,
+                attackSecond: null,
+                hitFirst: null,
+                hitSecond: null,
+                woundFirst: null,
+                woundSecond: null,
+                rendFirst: null,
+                rendSecond: null,
+                damageFirst: null,
+                damageSecond: null
+            }    
         };
 
         this.getPreviewScroll.weapons.push(weapon);
@@ -76,39 +129,66 @@ export default class WeaponForm extends Vue {
 </script>
 
 <style lang="scss">
-.attribute {
+.lower-side {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.weapon-add {
+    width: 205px;
+    background: #fff;
+    // box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+    border: 1px solid #000;
+    flex-direction: column;
+
     input, select {
-        width: 10%;
-        border: none;
-        background: #ececec;
-        border-right: 2px solid #ffffff;
+        height: 23px;
+        width: 100%;
+        font-size: 14px;
+        padding: 0 3px;
     }
 
     input::placeholder { font-style: italic; }
 }
 
-    
-// input:nth-child(1)
-//     width: 22%
+.weapon-form {
+    padding: 8px;
 
-// input:nth-child(2)
-//     width: 15%
+    .weapon-infos {
+        display: flex;
+        justify-content: space-between;
 
-// input:nth-child(4)
-//     width: 10%
+        .weapon-skills {
+            width: 37%;
+            padding-right: 6px;
+            border-right: 1px solid #000;
+        }
 
-// input:nth-child(5)
-//     width: 10%
+        .weapon-reminders {
+            width: 60%;
 
-// input:nth-child(6)
-//     width: 9%
+            .reminders-text {
+                font-size: 15px;
+                text-align: center;
+                height: 23px;
+                margin-bottom: 6px;
+            }
 
-// input:nth-child(7)
-//     width: 14%
+            .reminders-box {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
 
-// input:nth-child(8)
-//     width: 8%
+                .datalist-box { width: 49.5%; }
+            }
+        }
+    }
+}
 
-// input:nth-child(9)
-//     width: 12%
+.attributes-btn {
+    margin-left: auto;
+    width: 100%;
+    height: 32px;
+}
 </style>

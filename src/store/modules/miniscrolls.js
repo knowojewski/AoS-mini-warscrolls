@@ -44,7 +44,12 @@ const state = {
     scrollToEdit: {},
     keywordsToEdit: [],
     largeArray: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32, "D3", "2D3", "D6", "2D6"],
-    diceArray: [2,3,4,5,6]
+    mediumArray: [1,2,3,4,5,6,7,8,9,10, "D3", "2D3", "D6", "2D6"],
+    smallArray: [1,2,3,4,5, "D3", "2D3", "D6", "2D6"],
+    diceArray: ['2+','3+','4+','5+','6+'],
+    rendArray: ['-', -1, -2, -3, -4, -5],
+    rangeArray: [1, 2, 3, 6, 9, 12, 16, 18, 20, 24, 30, "D3", "2D3", "D6", "2D6"],
+    remindersArray: ['+1*', 'rr', 'rr1']
 };
 
 const getters = {
@@ -58,7 +63,12 @@ const getters = {
     getScrollToEdit: state => state.scrollToEdit,
     getKeywordsToEdit: state => state.keywordsToEdit,
     getLargeArray: state => state.largeArray,
-    getDiceArray: state => state.diceArray
+    getMediumArray: state => state.mediumArray,
+    getSmallArray: state => state.smallArray,
+    getDiceArray: state => state.diceArray,
+    getRemindersArray: state => state.remindersArray,
+    getRangeArray: state => state.rangeArray,
+    getRendArray: state => state.rendArray
 };
 
 const actions = {
