@@ -102,6 +102,11 @@ const actions = {
         const index = state.miniscrolls.findIndex(item => item.id === id);
         state.miniscrolls.splice(index, 1);
         dispatch('saveScrollToLocal');
+
+        const title = "Warscroll Deleted";
+        const content = "Warscroll has been successfully deleted from Your Warscrolls."
+
+        dispatch('displayMessage', {title, content});
     },
 
     changePosition({ dispatch }, {array, id, value}) {
@@ -126,8 +131,6 @@ const actions = {
         state.previewScroll.weapons = [...miniscroll.weapons];
         state.previewScroll.abilities = [...miniscroll.abilities];
         state.previewScroll.keywords = [...miniscroll.keywords];
-
-        console.log(state.scrollToEdit)
         
         commit('editModeOn');
     },
@@ -142,7 +145,7 @@ const actions = {
         dispatch('saveScrollToLocal');
     },
 
-    addScrollToPrint({ commit }, miniscroll) {
+    addScrollToPrint({ commit, dispatch }, miniscroll) {
         const printingScroll = {...miniscroll};
 
         let idDate = new Date();
@@ -150,13 +153,21 @@ const actions = {
         printingScroll.printId = idNumber;
 
         commit('addToPrint', printingScroll);
-        console.log(printingScroll);
-        console.log(commit);
+
+        const title = "Added to print";
+        const content = "Warscroll has been successfully added to the Print Sheet.";
+
+        dispatch('displayMessage', {title, content})
     },
 
-    deleteFromPrint({ state }, id) {
+    deleteFromPrint({ state, dispatch }, id) {
         const index = state.scrollsToPrint.findIndex( item => item.printId === id);
         state.scrollsToPrint.splice(index, 1);
+
+        const title = "Removed from print";
+        const content = "Warscroll has been successfully removed from the Print Sheet.";
+
+        dispatch('displayMessage', {title, content})
     }
 };
 const mutations = {
@@ -184,10 +195,7 @@ const mutations = {
         if(state.previewScroll.backAbilities) 
             state.previewScroll.backAbilities.push(ability);
     },
-    changeScroll: (state, {miniscroll, scrollToChange}) => {
-        state.miniscrolls.splice(scrollToChange, 1, miniscroll)
-        console.log(miniscroll)
-    }
+    changeScroll: (state, {miniscroll, scrollToChange}) => state.miniscrolls.splice(scrollToChange, 1, miniscroll)
 };
 
 export default {

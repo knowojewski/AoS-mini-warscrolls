@@ -62,7 +62,7 @@ export default class ScrollsContent extends Vue {
             color: #fff;
             font-size: 18px;
             font-weight: 500;
-            padding: 12px 0 0 30px;
+            padding-left: 30px;
             text-transform: uppercase;
         }
     }

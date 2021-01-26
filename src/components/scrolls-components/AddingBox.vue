@@ -3,9 +3,9 @@
         <img class="bottom-line" src="../../assets/miniscrolls/bottom-line.png" alt="bottom line">
         <img class="side-line left-line" src="../../assets/miniscrolls/side-line.png" alt="Left line">
         <img class="side-line right-line" src="../../assets/miniscrolls/side-line.png" alt="Right line">
-        <div class="adding-box__top">
-            <h2 v-if="!getEditMode" class="adding-box__heading">Create Warscroll</h2>
-            <h2 v-else class="adding-box__heading">Edit Warscroll</h2>
+        <div class="adding-box__top box-top">
+            <h2 v-if="!getEditMode" class="adding-box__heading box-top-title">Create Warscroll</h2>
+            <h2 v-else class="adding-box__heading box-top-title">Edit Warscroll</h2>
             <img class="top-bg" src="../../assets/miniscrolls/top-bg.png" alt="Top background">
         </div>
         <div class="adding-box__main">
@@ -150,6 +150,7 @@ export default class AddingBox extends Vue {
     @Action addScroll;
     @Action cancelEdit;
     @Action confirmEdit;
+    @Action displayMessage;
     @Mutation clearWeaponsArray;
     @Mutation clearAbilitiesArray;
     @Mutation clearKeywordsArray;
@@ -307,9 +308,17 @@ export default class AddingBox extends Vue {
         })
         
         if(this.getEditMode === true) {
+            const title = "Warscroll Edited";
+            const content = "Warscroll has been successfully edited and added to Your Warscrolls.";
+
+            this.displayMessage({title, content});
             this.confirmEdit(miniscroll);
             this.cancelEdit();
         } else {
+            const title = "Warscroll Created";
+            const content = "Warscroll has been successfully created and added to Your Warscrolls.";
+
+            this.displayMessage({title, content});
             this.addScroll(miniscroll);
         }
 
@@ -382,30 +391,6 @@ export default class AddingBox extends Vue {
 
     .right-line
         right: -5px
-
-    .adding-box__top
-        width: 100%
-        height: 50px
-        display: flex
-        align-items: center
-        position: relative
-        
-        .top-bg 
-            position: absolute
-            width: 102%
-            height: 100%
-            top: -5px
-            left: -1%
-            z-index: 0
-
-        .adding-box__heading
-            position: relative
-            color: #F5F5F5
-            font-size: 18px
-            font-weight: 500
-            padding: 0 0 14px 30px
-            text-transform: uppercase
-            z-index: 1
 
     .adding-box__main::-webkit-scrollbar
         background: #ffffff
@@ -574,6 +559,10 @@ export default class AddingBox extends Vue {
                         .keyword-add
                             width: 100%
 
+                            .attributes-btn
+                                margin-left: 0
+                                margin-right: auto
+
 .edit-mode 
     margin: 100px 0
 
@@ -584,6 +573,30 @@ export default class AddingBox extends Vue {
     width: 100%
     display: flex
     justify-content: center
+
+.box-top
+    width: 100%
+    height: 50px
+    display: flex
+    align-items: center
+    position: relative
+    
+    .top-bg 
+        position: absolute
+        width: 102%
+        height: 100%
+        top: -5px
+        left: -1%
+        z-index: 0
+
+    .box-top-title
+        position: relative
+        color: #F5F5F5
+        font-size: 18px
+        font-weight: 500
+        padding: 0 0 14px 30px
+        text-transform: uppercase
+        z-index: 1
 
 @media print 
     .adding-box 

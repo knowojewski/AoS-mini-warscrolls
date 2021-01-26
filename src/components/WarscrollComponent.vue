@@ -75,15 +75,39 @@
               </p>
               <p>
                 {{ weapon.attack }}
-                <!-- <span class="reminders">
-                  <span class="reminder reminder-top">+1L</span>
-                  <span class="reminder reminder-bottom">+1L</span>
-                </span> -->
+                <span class="reminders">
+                  <span class="reminder reminder-top">{{ weapon.reminders.attackFirst }}</span>
+                  <span class="reminder reminder-bottom">{{ weapon.reminders.attackSecond }}</span>
+                </span>
               </p>
-              <p>{{ weapon.hit }}</p>
-              <p>{{ weapon.wound }}</p>
-              <p>{{ weapon.rend }}</p>
-              <p>{{ weapon.damage }}</p>
+              <p>
+                {{ weapon.hit }}
+                <span class="reminders">
+                  <span class="reminder reminder-top">{{ weapon.reminders.hitFirst }}</span>
+                  <span class="reminder reminder-bottom">{{ weapon.reminders.hitSecond }}</span>
+                </span>
+              </p>
+              <p>
+                {{ weapon.wound }}
+                <span class="reminders">
+                  <span class="reminder reminder-top">{{ weapon.reminders.woundFirst }}</span>
+                  <span class="reminder reminder-bottom">{{ weapon.reminders.woundSecond }}</span>
+                </span>
+              </p>
+              <p>
+                {{ weapon.rend }}
+                <span class="reminders">
+                  <span class="reminder reminder-top">{{ weapon.reminders.rendFirst }}</span>
+                  <span class="reminder reminder-bottom">{{ weapon.reminders.rendSecond }}</span>
+                </span>
+              </p>
+              <p>
+                {{ weapon.damage }}
+                <span class="reminders">
+                  <span class="reminder reminder-top">{{ weapon.reminders.damageFirst }}</span>
+                  <span class="reminder reminder-bottom">{{ weapon.reminders.damageSecond }}</span>
+                </span>
+              </p>
             </div>
           </div>
           <div v-if="!miniscroll.frontAbilities" class="warscroll-abilities">
@@ -122,7 +146,8 @@
       <div v-if="component === 'scrollsContent'" class="btns">
           <div class="btn-box">
               <img src="../assets/button-border.png" alt="Button border">
-              <button @click="deleteScroll(miniscroll.id)" class="btn">Delete Warscroll</button>
+              <!-- <button @click="deleteScroll(miniscroll.id)" class="btn">Delete Warscroll</button> -->
+              <button @click="deleteWarscroll" class="btn">Delete Warscroll</button>
               <div class="btn-bg"></div>
           </div>
           <div class="btn-box">
@@ -209,6 +234,9 @@ export default class WarscrollComponent extends Vue {
     @Action editScroll;
     @Action deleteFromPrint;
     @Action addScrollToPrint;
+    @Action openAskModal;
+    @Action closeAskModal;
+    @Action displayMessage;
 
     currentScroll = document.createElement('div');
     backCard = false;
@@ -279,6 +307,15 @@ export default class WarscrollComponent extends Vue {
       if(event.target !== this.currentScroll) {
         this.currentScroll.classList.remove('turn-on');
       }
+    }
+
+    deleteWarscroll() {
+      this.openAskModal({
+        title: 'Delete Warscroll?', 
+        content: `Are you sure you want to delete ${this.miniscroll.name} warscroll?`, 
+        onConfirm: this.deleteScroll, 
+        scrollId: this.miniscroll.id
+      });
     }
 
     splitWarscroll() {
@@ -471,20 +508,7 @@ export default class WarscrollComponent extends Vue {
         margin-right: 4px;
       }
 
-      // .skills-icon.save {
-      //   width: 23px;
-      // }
-
-      // .skills-icon.wounds {
-      //   width: 23px;
-      // }
-
-      // .skills-icon.bravery {
-      //   width: 28px;
-      // }
-
       span { font-size: 20px; }
-
 
       .reminders {
         position: relative;
@@ -537,24 +561,25 @@ export default class WarscrollComponent extends Vue {
           justify-content: center;
           align-items: center;
 
+          .reminder {
+            font-size: 8px;
+          }
+
+          .reminder-left {
+            margin-right: 3px;
+          }
+
+          .reminder-right {
+            margin-left: 3px;
+          }
+
           .reminders {
-            height: 100%;
             margin-left: 2px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
 
-            .reminder {
-              font-size: 8px;
-            }
-
-            .reminder-top {
-
-            }
-
-            .reminder-bottom {
-
-            }
+            .reminder { font-size: 8px; }
           }
         }
 
