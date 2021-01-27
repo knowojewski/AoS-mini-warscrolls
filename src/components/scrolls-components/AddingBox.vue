@@ -45,14 +45,6 @@
                             false-value="Normal"
                             >
                         </div>
-                        <!-- <div class="radio-input">
-                            <input type="radio" id="moveNormal" name="moveType" value="Normal" v-model="move.type" checked>
-                            <label for="moveNormal">Normal</label>
-                        </div>
-                        <div class="radio-input">
-                            <input type="radio" id="moveFly" name="moveType" value="Fly" v-model="move.type">
-                            <label for="moveFly">Fly</label>
-                        </div> -->
                     </div>
                     
                     <div class="box number-box">

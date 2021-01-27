@@ -9,7 +9,7 @@
 
 <script>
 import { Vue, Component } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
+import { Action } from 'vuex-class';
 import NavigationComponent from './components/NavigationComponent';
 import MessageModal from './components/modals/MessageModal';
 import AskModal from './components/modals/AskModal';
