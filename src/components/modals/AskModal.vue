@@ -87,4 +87,10 @@ export default class AskModal extends Vue {
 .ask-bg.display {
     display: flex;
 }
+
+@media print {
+    .ask-bg {
+        display: none;
+    }
+}
 </style>

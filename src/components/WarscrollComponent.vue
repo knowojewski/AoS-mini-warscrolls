@@ -66,7 +66,7 @@
                 <img v-if="weapon.type === 'Melee'" class="weapon-icon melee" src="../assets/scroll-icons/melee-icon.png" alt="Melee Icon"/>
                 <img v-if="weapon.type === 'Ranged'" class="weapon-icon ranged" src="../assets/scroll-icons/ranged-icon.png" alt="Ranged Icon"/>
                 <span class="weapon-range">
-                  {{ weapon.range }}"
+                  {{ weapon.range }}
                   <span class="reminders">
                     <span class="reminder reminder-top">{{ weapon.reminders.rangeFirst }}</span>
                     <span class="reminder reminder-bottom">{{ weapon.reminders.rangeSecond }}</span>
@@ -574,10 +574,11 @@ export default class WarscrollComponent extends Vue {
           }
 
           .reminders {
+            // padding: 1px 0;
             margin-left: 2px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: space-around;
 
             .reminder { font-size: 8px; }
           }

@@ -55,4 +55,10 @@ export default class MessageModal extends Vue {
 .message-box.display {
     display: block;
 }
+
+@media print {
+    .messages {
+        display: none;
+    }
+}
 </style>
